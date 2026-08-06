@@ -21,7 +21,7 @@ function Login() {
     e.preventDefault();
     setLoading(true);
     try {
-      const apiBaseUrl = import.meta.env.VITE_API_URL || 'https://wealthmetricsx.onrender.com';
+      const apiBaseUrl = import.meta.env.VITE_API_URL || 'https://wealthmetrics-n.onrender.com';
       const response = await axios.post(`${apiBaseUrl}/api/auth/login`, { email, password });
       
       if (response.data && response.data.token) {
