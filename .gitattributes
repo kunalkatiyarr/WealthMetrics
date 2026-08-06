@@ -1,0 +1,7 @@
+/mvnw text eol=lf
+*.cmd text eol=crlf
+
+# Exclude frontend files from GitHub Linguist language statistics
+wealthmetrics-ui/** linguist-vendored
+WealthMetrics/wealthmetrics-ui/** linguist-vendored
+WealthMetrics/wealthmetrics-app/** linguist-vendored
