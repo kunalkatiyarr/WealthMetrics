@@ -1,15 +1,14 @@
 import React, { useState, useRef, useEffect } from 'react';
 import Sidebar from './Sidebar';
 import { 
-  Sparkles, 
-  Send, 
-  Bot, 
-  User, 
   Info, 
   Mic, 
   MicOff, 
   Volume2, 
-  VolumeX 
+  VolumeX,
+  ArrowRight,
+  TrendingUp,
+  BrainCircuit
 } from 'lucide-react';
 import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, Tooltip } from 'recharts';
 
@@ -18,7 +17,7 @@ function AiAdvisor() {
     {
       id: 1,
       sender: 'bot',
-      text: "Hello! I am your AI Financial Advisor. I have analyzed your current portfolio: a net worth of ₹3.76 Crore, a monthly salary inflow of ₹1.85 L, and an average outflow of ₹59,600. How can I help you optimize your wealth today?",
+      text: "Welcome to WealthMetrics Strategy Desk. I have synthesized your consolidated assets: a net worth of ₹3.76 Crore, a monthly salary inflow of ₹1.85 L, and an average outflow of ₹59,600. How can I assist in capital allocation, burn rate reduction, or wealth compounding today?",
       time: 'Just now'
     }
   ]);
@@ -181,31 +180,34 @@ function AiAdvisor() {
       if (!isMuted) {
         speakText(response.text, botMsgId);
       }
-    }, 1200);
+    }, 900);
   };
 
   return (
-    <div style={{ display: 'flex', minHeight: '100vh', background: 'radial-gradient(at 0% 0%, rgba(79, 70, 229, 0.04) 0px, transparent 50%), radial-gradient(at 50% 0%, rgba(59, 130, 246, 0.05) 0px, transparent 50%), radial-gradient(at 100% 100%, rgba(99, 102, 241, 0.03) 0px, transparent 50%), #f8fafc', color: '#0f172a', position: 'relative', overflow: 'hidden' }}>
-      
-      {/* Background glow blobs */}
-      <div style={{ position: 'absolute', width: '350px', height: '350px', background: 'rgba(79, 70, 229, 0.03)', filter: 'blur(100px)', borderRadius: '50%', top: '20%', right: '10%', zIndex: 0 }}></div>
-
+    <div style={{ display: 'flex', minHeight: '100vh', backgroundColor: '#FFFFFF' }}>
       <Sidebar />
 
-      <main style={{ flex: 1, display: 'flex', flexDirection: 'column', height: '100vh', zIndex: 1 }}>
+      <main className="wm-page-main" style={{ display: 'flex', flexDirection: 'column', height: '100vh', paddingBottom: '24px' }}>
         
-        {/* Header */}
-        <header style={{ padding: '24px 40px', borderBottom: '1px solid #e2e8f0', display: 'flex', justifyContent: 'space-between', alignItems: 'center', backgroundColor: 'rgba(255, 255, 255, 0.8)', backdropFilter: 'blur(12px)' }}>
-          <div>
-            <h1 style={{ fontSize: '24px', fontWeight: '700', display: 'flex', alignItems: 'center', gap: '10px', color: '#0f172a' }}>
-              <Sparkles color="#4f46e5" size={24} /> AI Financial Advisor
-              <span style={{ background: 'linear-gradient(135deg, #f59e0b, #06b6d4)', color: '#ffffff', padding: '3px 8px', borderRadius: '12px', fontSize: '10px', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.5px', marginLeft: '6px', boxShadow: '0 2px 6px rgba(245, 158, 11, 0.2)' }}>Gemini AI</span>
+        {/* ------------------------------------------------------------------
+            SECTION 1: EDITORIAL HERO & STRATEGIST STATUS
+            ------------------------------------------------------------------ */}
+        <section className="wm-page-hero" style={{ marginBottom: '24px', flexShrink: 0 }}>
+          <div className="wm-page-hero-content">
+            <span className="wm-eyebrow">AI Financial Intelligence & Advisory</span>
+            <h1 className="wm-hero-title">
+              Your Financial<br />
+              Advisor,<br />
+              Always Thinking.
             </h1>
-            <p style={{ color: '#475569', fontSize: '13px', marginTop: '4px' }}>Personalized investment advice powered by Gemini AI. (Concise Voice Replies enabled)</p>
+            <div className="wm-accent-bar" />
+            <p className="wm-body-lead" style={{ margin: '14px 0 0 0', maxWidth: '640px' }}>
+              Autonomous digital financial strategist synthesizing portfolio valuations, cash burn rates, and capital rebalancing protocols.
+            </p>
           </div>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-            {/* Global Voice Toggle */}
+          <div className="wm-page-actions">
+            {/* Audio Readout Switch */}
             <button 
               onClick={() => {
                 const nextMuted = !isMuted;
@@ -215,265 +217,309 @@ function AiAdvisor() {
                   setSpeakingMsgId(null);
                 }
               }}
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '8px',
-                padding: '6px 14px',
-                borderRadius: '20px',
-                background: isMuted ? 'rgba(239, 68, 68, 0.08)' : 'rgba(79, 70, 229, 0.08)',
-                color: isMuted ? '#ef4444' : '#4f46e5',
-                border: `1px solid ${isMuted ? 'rgba(239, 68, 68, 0.15)' : 'rgba(79, 70, 229, 0.15)'}`,
-                fontSize: '12px',
-                fontWeight: '600',
-                cursor: 'pointer',
-                transition: 'all 0.2s'
-              }}
+              className="wm-btn wm-btn-outline"
+              style={{ padding: '8px 16px', fontSize: '12px' }}
+              aria-label={isMuted ? "Enable automated voice speech" : "Mute automated voice speech"}
             >
-              {isMuted ? <VolumeX size={16} /> : <Volume2 size={16} />}
-              {isMuted ? 'Muted' : 'Auto Voice'}
+              {isMuted ? <VolumeX size={15} color="#DC2626" /> : <Volume2 size={15} color="#8B00FF" />}
+              <span>{isMuted ? 'Voice Muted' : 'Auto Voice On'}</span>
             </button>
 
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', background: 'rgba(79, 70, 229, 0.08)', color: '#4f46e5', padding: '6px 14px', borderRadius: '20px', fontSize: '12px', fontWeight: '600', border: '1px solid rgba(79, 70, 229, 0.15)' }}>
-              <Bot size={16} /> Online
+            {/* Model Badge */}
+            <div 
+              style={{ 
+                display: 'inline-flex', 
+                alignItems: 'center', 
+                gap: '8px', 
+                padding: '8px 16px', 
+                borderRadius: '4px', 
+                background: '#F0FDF4', 
+                border: '1px solid #BBF7D0',
+                fontSize: '12px',
+                fontWeight: '700',
+                color: '#059669',
+                textTransform: 'uppercase',
+                letterSpacing: '0.04em'
+              }}
+            >
+              <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#059669' }} />
+              AI Financial Strategist · Strategy Desk Active
             </div>
           </div>
-        </header>
+        </section>
 
-        {/* Chat Messages */}
-        <div style={{ flex: 1, padding: '24px 40px', overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '20px' }}>
+        {/* ------------------------------------------------------------------
+            SECTION 2: STRATEGIC ADVISORY WORKSPACE (MEMO STREAM)
+            ------------------------------------------------------------------ */}
+        <div 
+          style={{ 
+            flex: 1, 
+            overflowY: 'auto', 
+            padding: '8px 4px 20px 4px', 
+            display: 'flex', 
+            flexDirection: 'column', 
+            gap: '24px',
+            minHeight: '260px'
+          }}
+        >
           {messages.map((msg) => (
             <div 
               key={msg.id} 
               style={{ 
+                width: '100%',
                 display: 'flex', 
-                gap: '12px', 
-                alignSelf: msg.sender === 'user' ? 'flex-end' : 'flex-start',
-                maxWidth: '75%',
-                flexDirection: msg.sender === 'user' ? 'row-reverse' : 'row'
+                justifyContent: msg.sender === 'user' ? 'flex-end' : 'flex-start'
               }}
             >
-              {/* Avatar */}
-              <div style={{ 
-                width: '36px', 
-                height: '36px', 
-                borderRadius: '50%', 
-                background: msg.sender === 'user' ? 'linear-gradient(135deg, rgba(79, 70, 229, 0.15), rgba(59, 130, 246, 0.1))' : 'rgba(226, 232, 240, 0.8)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                border: `1px solid ${msg.sender === 'user' ? 'rgba(79, 70, 229, 0.2)' : '#cbd5e1'}`,
-                flexShrink: 0
-              }}>
-                {msg.sender === 'user' ? <User size={18} color="#4f46e5" /> : <Bot size={18} color="#475569" />}
-              </div>
-
-              {/* Speech Bubble */}
-              <div 
-                className="glass-card" 
-                style={{ 
-                  padding: '16px 20px', 
-                  borderRadius: msg.sender === 'user' ? '18px 4px 18px 18px' : '4px 18px 18px 18px',
-                  background: msg.sender === 'user' ? 'linear-gradient(135deg, rgba(79, 70, 229, 0.05), rgba(99, 102, 241, 0.03))' : 'rgba(255, 255, 255, 0.85)',
-                  border: `1px solid ${msg.sender === 'user' ? 'rgba(79, 70, 229, 0.15)' : 'rgba(226, 232, 240, 0.6)'}`,
-                  boxShadow: '0 4px 10px rgba(0,0,0,0.01)',
-                  backdropFilter: 'blur(12px)'
-                }}
-              >
-                <div style={{ display: 'flex', justifyContent: 'space-between', gap: '20px', alignItems: 'flex-start' }}>
-                  <div style={{ whiteSpace: 'pre-line', lineHeight: '1.6', fontSize: '14px', color: '#0f172a' }}>
+              {msg.sender === 'user' ? (
+                /* User Strategic Query */
+                <div className="wm-client-query" style={{ maxWidth: '640px' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+                    <span className="wm-eyebrow" style={{ color: '#8B00FF', margin: 0 }}>
+                      Client Strategic Inquiry
+                    </span>
+                    <span style={{ fontSize: '11px', color: '#6B7280' }}>{msg.time}</span>
+                  </div>
+                  <div style={{ fontSize: '15px', fontWeight: '600', color: '#111111', lineHeight: '1.5' }}>
                     {msg.text}
                   </div>
-                  
-                  {msg.sender === 'bot' && (
+                </div>
+              ) : (
+                /* AI Advisory Memo Card */
+                <div className="wm-advisory-memo" style={{ maxWidth: '820px', width: '100%' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '14px', borderBottom: '1px solid #F3F4F6', paddingBottom: '12px' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                      <div 
+                        style={{ 
+                          width: '32px', 
+                          height: '32px', 
+                          borderRadius: '4px', 
+                          background: '#FAF5FF', 
+                          border: '1px solid #E9D5FF',
+                          display: 'flex', 
+                          alignItems: 'center', 
+                          justifyContent: 'center',
+                          color: '#8B00FF'
+                        }}
+                      >
+                        <BrainCircuit size={18} />
+                      </div>
+                      <div>
+                        <span className="wm-eyebrow" style={{ margin: 0 }}>WealthMetrics Advisory Memo</span>
+                        <div style={{ fontSize: '12px', color: '#6B7280', fontWeight: '600' }}>Executive Portfolio Synthesis · {msg.time}</div>
+                      </div>
+                    </div>
+
                     <button 
                       onClick={() => speakText(msg.text, msg.id)}
                       style={{ 
-                        background: 'transparent', 
-                        border: 'none', 
+                        background: speakingMsgId === msg.id ? 'var(--wm-bg-lavender)' : 'transparent', 
+                        border: '1px solid var(--wm-border)', 
                         cursor: 'pointer', 
-                        color: speakingMsgId === msg.id ? '#4f46e5' : '#64748b',
-                        padding: '4px',
-                        borderRadius: '50%',
+                        color: speakingMsgId === msg.id ? '#8B00FF' : '#6B7280',
+                        width: '32px',
+                        height: '32px',
+                        borderRadius: '4px',
                         display: 'flex',
                         alignItems: 'center',
-                        justifyContent: 'center'
+                        justifyContent: 'center',
+                        transition: 'all 0.2s'
                       }}
-                      title="Read aloud"
+                      aria-label="Listen to strategy memo"
+                      title="Read strategy memo aloud"
                     >
-                      <Volume2 size={16} className={speakingMsgId === msg.id ? 'animate-pulse' : ''} />
+                      <Volume2 size={16} />
                     </button>
+                  </div>
+
+                  <div style={{ fontSize: '14px', color: '#111111', lineHeight: '1.7', fontWeight: '500', whiteSpace: 'pre-line' }}>
+                    {msg.text}
+                  </div>
+
+                  {/* Optional Embedded Compound Projection Chart */}
+                  {msg.chart && (
+                    <div style={{ marginTop: '20px', padding: '20px', background: 'var(--wm-bg-secondary)', border: '1px solid var(--wm-border)', borderRadius: '4px' }}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px' }}>
+                        <div>
+                          <span className="wm-eyebrow">Compounding Simulation</span>
+                          <h4 style={{ margin: '2px 0 0 0', fontSize: '14px', fontWeight: '700', color: '#111111' }}>
+                            15-Year Horizon (₹10,000/mo Contribution at 12% Annualized)
+                          </h4>
+                        </div>
+                        <span className="wm-badge-positive">
+                          <TrendingUp size={13} /> ₹50 Lakh Goal
+                        </span>
+                      </div>
+                      <div style={{ width: '100%', height: '220px' }}>
+                        <ResponsiveContainer width="100%" height="100%">
+                          <AreaChart data={msg.chart}>
+                            <defs>
+                              <linearGradient id="advisorChartFill" x1="0" y1="0" x2="0" y2="1">
+                                <stop offset="5%" stopColor="#8B00FF" stopOpacity={0.2}/>
+                                <stop offset="95%" stopColor="#8B00FF" stopOpacity={0}/>
+                              </linearGradient>
+                            </defs>
+                            <XAxis dataKey="year" stroke="#9CA3AF" tick={{ fill: '#374151', fontSize: 11, fontWeight: 600 }} />
+                            <YAxis stroke="#9CA3AF" tick={{ fill: '#374151', fontSize: 11, fontWeight: 600 }} tickFormatter={(v) => `₹${v/100000}L`} />
+                            <Tooltip 
+                              formatter={(val) => [`₹${val.toLocaleString()}`, '']} 
+                              contentStyle={{ background: '#FFFFFF', borderColor: '#E5E7EB', borderRadius: '4px' }} 
+                            />
+                            <Area type="monotone" dataKey="Value" name="Portfolio Value" stroke="#8B00FF" fillOpacity={1} fill="url(#advisorChartFill)" strokeWidth={2.5} />
+                            <Area type="monotone" dataKey="Invested" name="Invested Capital" stroke="#9CA3AF" fill="none" strokeWidth={1.5} strokeDasharray="3 3" />
+                          </AreaChart>
+                        </ResponsiveContainer>
+                      </div>
+                    </div>
                   )}
                 </div>
-
-                {/* If chart is attached */}
-                {msg.chart && (
-                  <div className="glass-card" style={{ marginTop: '16px', padding: '16px', background: '#f8fafc', height: '220px', width: '100%', minWidth: '320px', border: '1px solid #cbd5e1' }}>
-                    <h4 style={{ fontSize: '12px', color: '#475569', marginBottom: '12px', fontWeight: '600', textTransform: 'uppercase' }}>15-Year Compound Growth Chart (₹10,000/mo at 12%)</h4>
-                    <ResponsiveContainer width="100%" height="80%">
-                      <AreaChart data={msg.chart}>
-                        <defs>
-                          <linearGradient id="chartValColor" x1="0" y1="0" x2="0" y2="1">
-                            <stop offset="5%" stopColor="#4f46e5" stopOpacity={0.2}/>
-                            <stop offset="95%" stopColor="#4f46e5" stopOpacity={0}/>
-                          </linearGradient>
-                        </defs>
-                        <XAxis dataKey="year" stroke="#475569" fontSize={10} />
-                        <YAxis stroke="#475569" fontSize={10} tickFormatter={(v) => `₹${v/100000}L`} />
-                        <Tooltip formatter={(value) => [`₹${value.toLocaleString()}`, '']} contentStyle={{ background: '#ffffff', borderColor: '#cbd5e1', borderRadius: '8px' }} />
-                        <Area type="monotone" dataKey="Value" name="Portfolio Value" stroke="#4f46e5" fillOpacity={1} fill="url(#chartValColor)" strokeWidth={2.5} />
-                        <Area type="monotone" dataKey="Invested" name="Invested Capital" stroke="#94a3b8" fill="none" strokeWidth={1.5} strokeDasharray="3 3" />
-                      </AreaChart>
-                    </ResponsiveContainer>
-                  </div>
-                )}
-
-                <div style={{ fontSize: '10px', color: '#64748b', marginTop: '8px', textAlign: msg.sender === 'user' ? 'right' : 'left' }}>
-                  {msg.time}
-                </div>
-              </div>
+              )}
             </div>
           ))}
 
           {/* Typing Indicator */}
           {isTyping && (
-            <div style={{ display: 'flex', gap: '12px', alignSelf: 'flex-start' }}>
-              <div style={{ 
-                width: '36px', 
-                height: '36px', 
-                borderRadius: '50%', 
-                background: 'rgba(79, 70, 229, 0.08)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                border: '1px solid rgba(79, 70, 229, 0.15)'
-              }}>
-                <Bot size={18} color="#4f46e5" />
+            <div className="wm-advisory-memo" style={{ maxWidth: '400px', display: 'flex', alignItems: 'center', gap: '12px' }}>
+              <div 
+                style={{ 
+                  width: '28px', 
+                  height: '28px', 
+                  borderRadius: '4px', 
+                  background: '#FAF5FF', 
+                  display: 'flex', 
+                  alignItems: 'center', 
+                  justifyContent: 'center',
+                  color: '#8B00FF'
+                }}
+              >
+                <BrainCircuit size={16} />
               </div>
-              <div className="glass-card" style={{ padding: '14px 20px', borderRadius: '4px 18px 18px 18px', display: 'flex', alignItems: 'center', gap: '6px', background: '#ffffff', border: '1px solid #e2e8f0' }}>
-                <span style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: '#4f46e5', animation: 'bounce 1.4s infinite ease-in-out' }}></span>
-                <span style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: '#4f46e5', animation: 'bounce 1.4s infinite ease-in-out 0.2s' }}></span>
-                <span style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: '#4f46e5', animation: 'bounce 1.4s infinite ease-in-out 0.4s' }}></span>
-              </div>
+              <span style={{ fontSize: '13px', fontWeight: '600', color: '#6B7280' }}>
+                Synthesizing strategic allocation guidance...
+              </span>
             </div>
           )}
+
           <div ref={chatEndRef} />
         </div>
 
-        {/* Suggestion Chips */}
-        <div style={{ padding: '12px 40px 0', display: 'flex', gap: '10px', overflowX: 'auto', scrollbarWidth: 'none', zIndex: 5 }}>
-          {suggestionChips.map((chip, i) => (
-            <button
-              key={i}
-              onClick={() => handleSendMessage(chip.label, chip.value)}
-              style={{
-                flexShrink: 0,
-                padding: '8px 14px',
-                borderRadius: '20px',
-                background: '#ffffff',
-                border: '1px solid #cbd5e1',
-                color: '#475569',
-                fontSize: '12px',
-                cursor: 'pointer',
-                transition: 'all 0.2s',
-                outline: 'none',
-                boxShadow: '0 1px 2px rgba(0,0,0,0.03)'
-              }}
-              onMouseEnter={(e) => {
-                e.target.style.background = 'rgba(79, 70, 229, 0.08)';
-                e.target.style.borderColor = 'rgba(79, 70, 229, 0.3)';
-                e.target.style.color = '#4f46e5';
-              }}
-              onMouseLeave={(e) => {
-                e.target.style.background = '#ffffff';
-                e.target.style.borderColor = '#cbd5e1';
-                e.target.style.color = '#475569';
-              }}
-            >
-              {chip.label}
-            </button>
-          ))}
+        {/* ------------------------------------------------------------------
+            SECTION 3: SUGGESTED STRATEGIC INQUIRIES
+            ------------------------------------------------------------------ */}
+        <div style={{ marginBottom: '14px', flexShrink: 0 }}>
+          <span className="wm-eyebrow" style={{ display: 'block', marginBottom: '8px' }}>
+            Recommended Strategic Queries
+          </span>
+          <div style={{ display: 'flex', gap: '10px', overflowX: 'auto', paddingBottom: '4px' }}>
+            {suggestionChips.map((chip, i) => (
+              <button
+                key={i}
+                onClick={() => handleSendMessage(chip.label, chip.value)}
+                style={{
+                  flexShrink: 0,
+                  padding: '9px 16px',
+                  borderRadius: '4px',
+                  background: '#FFFFFF',
+                  border: '1px solid var(--wm-border)',
+                  color: '#111111',
+                  fontFamily: 'Inter, sans-serif',
+                  fontSize: '12px',
+                  fontWeight: '600',
+                  cursor: 'pointer',
+                  transition: 'all 0.2s',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '6px'
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.borderColor = '#8B00FF';
+                  e.currentTarget.style.backgroundColor = '#FAF5FF';
+                  e.currentTarget.style.color = '#8B00FF';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.borderColor = 'var(--wm-border)';
+                  e.currentTarget.style.backgroundColor = '#FFFFFF';
+                  e.currentTarget.style.color = '#111111';
+                }}
+              >
+                <span>{chip.label}</span>
+                <ArrowRight size={12} color="#8B00FF" />
+              </button>
+            ))}
+          </div>
         </div>
 
-        {/* Input area */}
-        <div style={{ padding: '20px 40px 10px', borderTop: '1px solid #e2e8f0', backgroundColor: '#ffffff', zIndex: 5 }}>
+        {/* ------------------------------------------------------------------
+            SECTION 4: CLIENT PROMPT INPUT DOCK
+            ------------------------------------------------------------------ */}
+        <div style={{ flexShrink: 0, background: '#FFFFFF', border: '1px solid var(--wm-border)', borderRadius: '4px', padding: '16px 20px', boxShadow: '0 2px 8px rgba(0,0,0,0.03)' }}>
           <form 
             onSubmit={(e) => {
               e.preventDefault();
               handleSendMessage(inputText);
             }}
-            style={{ display: 'flex', gap: '12px', position: 'relative' }}
+            style={{ display: 'flex', gap: '12px', alignItems: 'center' }}
           >
-            <input 
-              type="text" 
-              className="glass-input" 
-              placeholder={isListening ? "Listening... Speak now..." : "Ask anything about saving rates, property holdings..."}
-              style={{ 
-                width: '100%', 
-                paddingRight: '98px', 
-                height: '48px',
-                borderColor: isListening ? '#ef4444' : '#cbd5e1',
-                boxShadow: isListening ? '0 0 14px rgba(239, 68, 68, 0.4)' : 'none'
-              }}
-              value={inputText}
-              onChange={(e) => setInputText(e.target.value)}
-              disabled={isListening}
-            />
+            <div style={{ flex: 1, position: 'relative' }}>
+              <input 
+                type="text" 
+                className="wm-input" 
+                placeholder={isListening ? "Listening... Speak your financial strategy query..." : "Ask your advisor regarding car affordability, burn rates, asset allocation..."}
+                style={{ 
+                  height: '46px',
+                  paddingRight: '50px',
+                  borderColor: isListening ? '#DC2626' : undefined
+                }}
+                value={inputText}
+                onChange={(e) => setInputText(e.target.value)}
+                disabled={isListening}
+                aria-label="Financial inquiry prompt"
+              />
 
-            {/* Glowing Mic button */}
-            <button 
-              type="button"
-              onClick={startListening}
-              style={{
-                position: 'absolute',
-                right: '50px',
-                top: '50%',
-                transform: 'translateY(-50%)',
-                width: '38px',
-                height: '38px',
-                borderRadius: '8px',
-                background: isListening ? 'linear-gradient(135deg, #ef4444, #b91c1c)' : '#f1f5f9',
-                border: `1px solid ${isListening ? '#ef4444' : '#e2e8f0'}`,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                cursor: 'pointer',
-                color: isListening ? '#ffffff' : '#475569',
-                boxShadow: isListening ? '0 4px 10px rgba(239, 68, 68, 0.4)' : 'none',
-                transition: 'all 0.2s'
-              }}
-              title="Voice Input (Speech-to-Text)"
-            >
-              {isListening ? <MicOff size={16} /> : <Mic size={16} />}
-            </button>
+              {/* Glowing Mic button */}
+              <button 
+                type="button"
+                onClick={startListening}
+                className={isListening ? 'wm-mic-listening' : ''}
+                style={{
+                  position: 'absolute',
+                  right: '6px',
+                  top: '50%',
+                  transform: 'translateY(-50%)',
+                  width: '34px',
+                  height: '34px',
+                  borderRadius: '4px',
+                  background: isListening ? '#DC2626' : 'var(--wm-bg-secondary)',
+                  border: `1px solid ${isListening ? '#DC2626' : 'var(--wm-border)'}`,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  cursor: 'pointer',
+                  color: isListening ? '#FFFFFF' : '#374151',
+                  transition: 'all 0.2s'
+                }}
+                aria-label="Voice input"
+                title="Voice Input (Speech-to-Text)"
+              >
+                {isListening ? <MicOff size={16} /> : <Mic size={16} />}
+              </button>
+            </div>
 
             <button 
               type="submit" 
-              style={{ 
-                position: 'absolute', 
-                right: '6px', 
-                top: '50%', 
-                transform: 'translateY(-50%)', 
-                width: '38px', 
-                height: '38px', 
-                borderRadius: '8px', 
-                background: 'linear-gradient(135deg, #4f46e5, #6d28d9)',
-                border: 'none',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                cursor: 'pointer',
-                boxShadow: '0 2px 6px rgba(79, 70, 229, 0.2)'
-              }}
+              className="wm-btn wm-btn-primary"
+              style={{ height: '46px', padding: '0 24px', flexShrink: 0 }}
+              aria-label="Send financial prompt"
             >
-              <Send size={16} color="#fff" />
+              <span>Ask Your Advisor</span>
+              <ArrowRight size={16} />
             </button>
           </form>
 
-          {/* Disclaimer */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '16px', color: '#64748b', fontSize: '11px', lineHeight: '1.4' }}>
-            <Info size={14} style={{ flexShrink: 0 }} />
-            <span>Disclaimer: The responses generated by the AI Financial Advisor are purely for educational purposes and do not represent professional financial, investment, or tax advice.</span>
+          {/* Legal Disclaimer */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '10px', color: '#6B7280', fontSize: '11px' }}>
+            <Info size={13} style={{ flexShrink: 0 }} />
+            <span>Advisory statements are generated from verified internal ledger telemetry and do not constitute formal fiduciary tax or legal advice.</span>
           </div>
         </div>
 

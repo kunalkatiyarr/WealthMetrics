@@ -1,0 +1,7 @@
+{
+  "buildCommand": "cd wealthmetrics-ui && npm install && npm run build",
+  "outputDirectory": "wealthmetrics-ui/dist",
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/" }
+  ]
+}

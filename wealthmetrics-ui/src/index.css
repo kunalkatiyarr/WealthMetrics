@@ -1,135 +1,1659 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+/* ==========================================================================
+   WealthMetrics Corporate Technology Design System (Accenture-Inspired Light)
+   ========================================================================== */
 
 :root {
-  --bg-primary: #f8fafc;
-  --card-bg: #ffffff;
-  --card-border: #e2e8f0;
-  --accent-green: #10b981;
-  --accent-blue: #4f46e5;
-  --text-primary: #0f172a;
-  --text-muted: #475569;
+  /* Canvas & Surfaces (Bright, Light Corporate System) */
+  --wm-bg-primary: #FFFFFF;
+  --wm-bg-secondary: #F7F8FA;
+  --wm-bg-lavender: #F5F0FF;
+  --wm-bg-gray: #F3F4F6;
+  --wm-surface: #FFFFFF;
+  --wm-surface-elevated: #FFFFFF;
+  --wm-surface-hover: #F5F0FF;
+  --wm-surface-active: #EEE5FF;
+
+  /* Hairline Borders & Dividers */
+  --wm-border: #E5E7EB;
+  --wm-border-subtle: #F0F0F0;
+  --wm-border-bright: #D1D5DB;
+  --wm-border-accent: #8B00FF;
+  --wm-border-accent-subtle: rgba(139, 0, 255, 0.3);
+
+  /* Primary Electric Purple & Supporting Accents */
+  --wm-accent-primary: #8B00FF;
+  --wm-accent-secondary: #7C3AED;
+  --wm-accent-hover: #7C00E8;
+  --wm-accent-active: #6D00D9;
+  --wm-accent-magenta: #D946EF;
+  --wm-accent-subtle: rgba(139, 0, 255, 0.08);
+  --wm-accent-glow: 0 4px 16px rgba(139, 0, 255, 0.22);
+
+  /* Supporting Controlled Accents */
+  --wm-accent-cyan: #06B6D4;
+  --wm-accent-blue: #2563EB;
+  --wm-accent-lime: #84CC16;
+  --wm-accent-yellow: #FACC15;
+
+  /* Typography / Text Palette (Dark typography on Light Canvas) */
+  --wm-text-primary: #111111;
+  --wm-text-secondary: #374151;
+  --wm-text-muted: #6B7280;
+  --wm-text-dim: #9CA3AF;
+  --wm-text-inverse: #FFFFFF;
+
+  /* Financial Status Signals (Restrained, Corporate on Light) */
+  --wm-positive: #059669;
+  --wm-positive-bg: #ECFDF5;
+  --wm-positive-border: #A7F3D0;
+
+  --wm-negative: #DC2626;
+  --wm-negative-bg: #FEF2F2;
+  --wm-negative-border: #FECACA;
+
+  --wm-warning: #D97706;
+  --wm-warning-bg: #FFFBEB;
+  --wm-warning-border: #FDE68A;
+
+  /* Typography Fonts */
+  --wm-font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --wm-font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+
+  /* Corner Radius (Minimalist, Corporate Sharp: 0–6px) */
+  --wm-radius-none: 0px;
+  --wm-radius-sm: 2px;
+  --wm-radius-md: 4px;
+  --wm-radius-lg: 6px;
+  --wm-radius-pill: 9999px;
+
+  /* Motion & Transitions */
+  --wm-transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --wm-transition-base: 250ms cubic-bezier(0.4, 0, 0.2, 1);
+  --wm-transition-smooth: 400ms cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* Backward Compatibility Variables */
+  --bg-primary: var(--wm-bg-primary);
+  --card-bg: var(--wm-surface);
+  --card-border: var(--wm-border);
+  --accent-green: var(--wm-positive);
+  --accent-blue: var(--wm-accent-primary);
+  --text-primary: var(--wm-text-primary);
+  --text-muted: var(--wm-text-muted);
 }
 
-body {
+/* Base Reset & Application Canvas */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html, body {
   margin: 0;
-  background: radial-gradient(at 0% 0%, rgba(79, 70, 229, 0.05) 0px, transparent 50%), 
-              radial-gradient(at 50% 0%, rgba(37, 99, 235, 0.06) 0px, transparent 50%), 
-              radial-gradient(at 100% 100%, rgba(99, 102, 241, 0.04) 0px, transparent 50%), 
-              #f1f5f9;
-  color: var(--text-primary);
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  padding: 0;
+  background-color: var(--wm-bg-primary);
+  color: var(--wm-text-primary);
+  font-family: var(--wm-font-sans);
+  font-size: 16px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   min-height: 100vh;
 }
 
-/* Glassmorphism & Card Elevation (rounded-2xl, bg-white/85, backdrop-blur-24, thin border, hover indigo glow) */
-.glass-card {
-  background: rgba(255, 255, 255, 0.85) !important;
-  backdrop-filter: blur(24px) !important;
-  -webkit-backdrop-filter: blur(24px) !important;
-  border: 1px solid rgba(226, 232, 240, 0.8) !important;
-  border-radius: 1.25rem !important; /* rounded-2xl */
-  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.02), 0 1px 2px rgba(15, 23, 42, 0.01) !important;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
-  color: #0f172a !important;
+/* ==========================================================================
+   Editorial Typography Scale
+   ========================================================================== */
+
+/* 1. Hero Title: 72–110px desktop, tight tracking & line-height */
+.wm-hero-title {
+  font-size: clamp(48px, 7vw, 108px);
+  line-height: 0.95;
+  letter-spacing: -0.04em;
+  font-weight: 800;
+  color: var(--wm-text-primary);
+  margin: 0;
 }
 
-.glass-card:hover {
-  transform: translateY(-4px) !important; /* hover:-translate-y-1 */
-  box-shadow: 0 20px 25px -5px rgba(79, 70, 229, 0.08), 0 8px 10px -6px rgba(79, 70, 229, 0.08) !important;
-  border-color: rgba(79, 70, 229, 0.2) !important;
+/* 2. Page Title: 40–72px */
+.wm-page-title {
+  font-size: clamp(40px, 5vw, 72px);
+  line-height: 1.05;
+  letter-spacing: -0.035em;
+  font-weight: 800;
+  color: var(--wm-text-primary);
+  margin: 0;
 }
 
-/* Light Navigation */
-.glass-nav {
-  background: rgba(255, 255, 255, 0.8) !important;
-  backdrop-filter: blur(16px) !important;
-  -webkit-backdrop-filter: blur(16px) !important;
-  border-bottom: 1px solid #e2e8f0 !important;
+/* 3. Section Heading: 30–52px */
+.wm-section-heading {
+  font-size: clamp(30px, 3.5vw, 52px);
+  line-height: 1.15;
+  letter-spacing: -0.025em;
+  font-weight: 700;
+  color: var(--wm-text-primary);
+  margin: 0;
 }
 
-/* Custom Scrollbars */
+/* 4. Card Heading: 24–32px */
+.wm-card-heading {
+  font-size: clamp(22px, 2.5vw, 30px);
+  line-height: 1.25;
+  letter-spacing: -0.015em;
+  font-weight: 700;
+  color: var(--wm-text-primary);
+  margin: 0;
+}
+
+/* 5. Editorial Eyebrow / Category Header */
+.wm-eyebrow {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--wm-accent-primary);
+  margin-bottom: 8px;
+  display: block;
+}
+
+/* 6. Body Text */
+.wm-body-lead {
+  font-size: 18px;
+  line-height: 1.6;
+  color: var(--wm-text-secondary);
+}
+
+.wm-body {
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--wm-text-secondary);
+}
+
+.wm-caption {
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--wm-text-muted);
+}
+
+/* 7. High-Impact Metric Numbers */
+.wm-metric-display {
+  font-size: clamp(38px, 5vw, 68px);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  font-variant-numeric: tabular-nums;
+  color: var(--wm-text-primary);
+}
+
+/* ==========================================================================
+   Accenture-Style Geometric Accent Elements
+   ========================================================================== */
+
+/* Horizontal electric purple line */
+.wm-accent-bar {
+  display: block;
+  height: 3px;
+  width: 48px;
+  background: var(--wm-accent-primary);
+  margin: 16px 0;
+}
+
+.wm-accent-bar-full {
+  display: block;
+  height: 2px;
+  width: 100%;
+  background: linear-gradient(90deg, var(--wm-accent-primary) 0%, transparent 100%);
+  margin: 24px 0;
+}
+
+/* Clean corporate separator */
+.wm-divider {
+  border: none;
+  border-top: 1px solid var(--wm-border);
+  margin: 32px 0;
+  width: 100%;
+}
+
+/* Geometric arrow hover interaction */
+.wm-arrow-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--wm-text-primary);
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  transition: color var(--wm-transition-fast);
+}
+
+.wm-arrow-link:hover {
+  color: var(--wm-accent-primary);
+}
+
+.wm-arrow-link:hover .wm-arrow-icon {
+  transform: translateX(4px);
+}
+
+.wm-arrow-icon {
+  transition: transform var(--wm-transition-fast);
+  color: var(--wm-accent-primary);
+}
+
+/* Minimalist corporate tag/badge */
+.wm-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  border-radius: var(--wm-radius-sm);
+  background: var(--wm-bg-gray);
+  border: 1px solid var(--wm-border);
+  color: var(--wm-text-secondary);
+}
+
+.wm-tag-accent {
+  background: var(--wm-accent-subtle);
+  border-color: rgba(139, 0, 255, 0.25);
+  color: var(--wm-accent-primary);
+}
+
+.wm-tag-positive {
+  background: var(--wm-positive-bg);
+  border-color: var(--wm-positive-border);
+  color: var(--wm-positive);
+}
+
+.wm-tag-negative {
+  background: var(--wm-negative-bg);
+  border-color: var(--wm-negative-border);
+  color: var(--wm-negative);
+}
+
+/* ==========================================================================
+   Corporate Surfaces & Cards (Sharp, Rectangular, Light)
+   ========================================================================== */
+
+.wm-card {
+  background: var(--wm-surface);
+  border: 1px solid var(--wm-border);
+  border-radius: var(--wm-radius-md);
+  padding: 32px;
+  color: var(--wm-text-primary);
+  position: relative;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+  transition: border-color var(--wm-transition-base), box-shadow var(--wm-transition-base);
+}
+
+.wm-card:hover {
+  border-color: var(--wm-border-bright);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.wm-card-secondary {
+  background: var(--wm-bg-secondary);
+  border: 1px solid var(--wm-border);
+  border-radius: var(--wm-radius-md);
+  padding: 32px;
+  color: var(--wm-text-primary);
+}
+
+.wm-card-lavender {
+  background: var(--wm-bg-lavender);
+  border: 1px solid #E9D5FF;
+  border-radius: var(--wm-radius-md);
+  padding: 32px;
+  color: var(--wm-text-primary);
+}
+
+/* ==========================================================================
+   Button System
+   ========================================================================== */
+
+.wm-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 12px 24px;
+  font-family: var(--wm-font-sans);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  border-radius: var(--wm-radius-sm);
+  cursor: pointer;
+  transition: all var(--wm-transition-fast);
+  outline: none;
+  text-decoration: none;
+}
+
+/* Primary Electric Purple Button */
+.wm-btn-primary {
+  background: var(--wm-accent-primary);
+  color: #FFFFFF;
+  border: 1px solid var(--wm-accent-primary);
+  box-shadow: 0 2px 6px rgba(139, 0, 255, 0.2);
+}
+
+.wm-btn-primary:hover {
+  background: var(--wm-accent-hover);
+  border-color: var(--wm-accent-hover);
+  box-shadow: 0 4px 14px rgba(139, 0, 255, 0.3);
+}
+
+.wm-btn-primary:active {
+  background: var(--wm-accent-active);
+}
+
+/* Secondary Button */
+.wm-btn-secondary {
+  background: #FFFFFF;
+  color: var(--wm-accent-primary);
+  border: 1px solid var(--wm-accent-primary);
+}
+
+.wm-btn-secondary:hover {
+  background: var(--wm-surface-hover);
+  border-color: var(--wm-accent-hover);
+}
+
+/* Outline Dark Button */
+.wm-btn-outline {
+  background: #FFFFFF;
+  color: var(--wm-text-primary);
+  border: 1px solid var(--wm-border-bright);
+}
+
+.wm-btn-outline:hover {
+  background: var(--wm-bg-secondary);
+  border-color: var(--wm-text-primary);
+}
+
+/* Ghost Purple Button */
+.wm-btn-ghost {
+  background: transparent;
+  color: var(--wm-text-secondary);
+  border: 1px solid transparent;
+}
+
+.wm-btn-ghost:hover {
+  color: var(--wm-accent-primary);
+  background: var(--wm-accent-subtle);
+}
+
+/* ==========================================================================
+   Form Controls & Inputs
+   ========================================================================== */
+
+.wm-input {
+  width: 100%;
+  background: #FFFFFF;
+  border: 1px solid var(--wm-border-bright);
+  border-radius: var(--wm-radius-sm);
+  padding: 12px 16px;
+  font-family: var(--wm-font-sans);
+  font-size: 14px;
+  color: var(--wm-text-primary);
+  outline: none;
+  transition: border-color var(--wm-transition-fast), box-shadow var(--wm-transition-fast);
+}
+
+.wm-input::placeholder {
+  color: var(--wm-text-dim);
+}
+
+.wm-input:focus {
+  border-color: var(--wm-accent-primary);
+  box-shadow: 0 0 0 3px rgba(139, 0, 255, 0.12);
+}
+
+/* ==========================================================================
+   Corporate Data Tables
+   ========================================================================== */
+
+.wm-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 14px;
+}
+
+.wm-table th {
+  padding: 14px 20px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--wm-text-muted);
+  border-bottom: 1px solid var(--wm-border);
+  background: var(--wm-bg-secondary);
+}
+
+.wm-table td {
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--wm-border-subtle);
+  color: var(--wm-text-secondary);
+}
+
+.wm-table tbody tr {
+  transition: background-color var(--wm-transition-fast);
+}
+
+.wm-table tbody tr:hover {
+  background-color: var(--wm-surface-hover);
+}
+
+/* ==========================================================================
+   Scrollbars & Skeleton Loaders
+   ========================================================================== */
+
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #f1f5f9;
+  background: var(--wm-bg-secondary);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #cbd5e1;
-  border-radius: 4px;
+  background: var(--wm-border-bright);
+  border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #94a3b8;
+  background: var(--wm-accent-primary);
 }
 
-/* Premium Indigo to Royal Blue CTA Buttons */
-.btn-primary {
-  background: linear-gradient(135deg, #4f46e5 0%, #2563eb 100%) !important;
-  border: none !important;
-  border-radius: 10px !important;
-  color: #ffffff !important;
-  font-weight: 600 !important;
-  cursor: pointer !important;
-  transition: all 0.2s ease-in-out !important;
-  box-shadow: 0 2px 6px rgba(79, 70, 229, 0.18) !important;
-}
-
-.btn-primary:hover {
-  transform: translateY(-1px) !important;
-  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.28) !important;
-}
-
-/* Light Mode Inputs */
-.glass-input {
-  background: #ffffff !important;
-  border: 1px solid #cbd5e1 !important;
-  color: #0f172a !important;
-  border-radius: 10px !important;
-  padding: 10px 14px; /* Allowed override for padding-left with icons */
-  font-size: 14px !important;
-  outline: none !important;
-  transition: all 0.2s ease-in-out !important;
-}
-
-.glass-input::placeholder {
-  color: #94a3b8 !important;
-}
-
-.glass-input:focus {
-  border-color: #4f46e5 !important;
-  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1) !important;
-}
-
-/* Custom Animations */
-@keyframes bounce {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-4px); }
-}
-
-.animate-pulse {
-  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-}
-
-@keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: .5; }
-}
-
-/* Pulsing Skeleton Loader */
-@keyframes skeleton-pulse {
-  0%, 100% { background-color: #f1f5f9; }
-  50% { background-color: #e2e8f0; }
-  100% { background-color: #f1f5f9; }
+@keyframes wm-pulse {
+  0%, 100% { opacity: 0.9; }
+  50% { opacity: 0.4; }
 }
 
 .skeleton {
-  animation: skeleton-pulse 1.5s ease-in-out infinite !important;
-  border-radius: 8px !important;
-  background-color: #f1f5f9;
+  background-color: var(--wm-bg-gray) !important;
+  border: 1px solid var(--wm-border) !important;
+  border-radius: var(--wm-radius-sm) !important;
+  animation: wm-pulse 1.8s cubic-bezier(0.4, 0, 0.6, 1) infinite !important;
 }
+
+/* ==========================================================================
+   Application Shell & Navigation (Phase 2 Light System)
+   ========================================================================== */
+
+/* Neutralize legacy dark or light inline backgrounds across all authenticated page wrappers */
+body > div#root > div {
+  background: var(--wm-bg-primary) !important;
+  background-color: var(--wm-bg-primary) !important;
+  color: var(--wm-text-primary) !important;
+}
+
+body > div#root > div > main {
+  background: var(--wm-bg-secondary) !important;
+  background-color: var(--wm-bg-secondary) !important;
+  color: var(--wm-text-primary) !important;
+}
+
+/* Hide legacy light-mode ambient glow circles */
+body > div#root > div > div[style*="blur(120px)"],
+body > div#root > div > div[style*="blur(100px)"],
+body > div#root > div > div[style*="blur(80px)"] {
+  display: none !important;
+}
+
+/* Desktop Fixed Sidebar */
+.wm-sidebar-desktop {
+  width: 260px;
+  min-width: 260px;
+  height: 100vh;
+  position: sticky;
+  top: 0;
+  left: 0;
+  background-color: #FFFFFF;
+  border-right: 1px solid var(--wm-border);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 32px 0 24px 0;
+  z-index: 50;
+  user-select: none;
+}
+
+/* Sidebar Brand / Header */
+.wm-sidebar-header {
+  padding: 0 24px 28px 24px;
+  border-bottom: 1px solid var(--wm-border-subtle);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.wm-sidebar-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
+}
+
+.wm-brand-icon {
+  width: 32px;
+  height: 32px;
+  background: var(--wm-bg-lavender);
+  border: 1px solid #E9D5FF;
+  border-radius: var(--wm-radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--wm-accent-primary);
+  box-shadow: 0 2px 6px rgba(139, 0, 255, 0.1);
+}
+
+.wm-brand-name {
+  font-family: var(--wm-font-sans);
+  font-size: 16px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--wm-text-primary);
+  text-transform: uppercase;
+}
+
+.wm-brand-subtitle {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--wm-text-muted);
+  margin-left: 44px;
+}
+
+/* Navigation Groups & Items */
+.wm-nav-container {
+  flex: 1;
+  overflow-y: auto;
+  padding: 24px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.wm-nav-group {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.wm-nav-group-title {
+  padding: 0 24px 8px 24px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--wm-text-dim);
+}
+
+.wm-nav-item {
+  width: 100%;
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 11px 24px;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  color: var(--wm-text-secondary);
+  font-family: var(--wm-font-sans);
+  font-size: 14px;
+  font-weight: 500;
+  text-align: left;
+  cursor: pointer;
+  transition: all var(--wm-transition-fast);
+  outline: none;
+}
+
+.wm-nav-item:hover {
+  color: var(--wm-text-primary);
+  background-color: var(--wm-surface-hover);
+}
+
+.wm-nav-item:focus-visible {
+  outline: 2px solid var(--wm-accent-primary);
+  outline-offset: -2px;
+}
+
+.wm-nav-item.active {
+  color: var(--wm-text-primary);
+  font-weight: 600;
+  background-color: rgba(139, 0, 255, 0.07);
+}
+
+.wm-nav-item.active .wm-nav-indicator {
+  opacity: 1;
+  height: 100%;
+}
+
+.wm-nav-item.active .wm-nav-icon {
+  color: var(--wm-accent-primary);
+}
+
+.wm-nav-indicator {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 3px;
+  height: 0;
+  background-color: var(--wm-accent-primary);
+  transition: height var(--wm-transition-fast), opacity var(--wm-transition-fast);
+  opacity: 0;
+}
+
+.wm-nav-icon {
+  flex-shrink: 0;
+  color: var(--wm-text-muted);
+  transition: color var(--wm-transition-fast);
+}
+
+.wm-nav-item:hover .wm-nav-icon {
+  color: var(--wm-accent-primary);
+}
+
+/* Sidebar Footer & User Section */
+.wm-sidebar-footer {
+  padding: 20px 20px 0 20px;
+  border-top: 1px solid var(--wm-border-subtle);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.wm-user-block {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.wm-user-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--wm-radius-sm);
+  background: var(--wm-bg-lavender);
+  border: 1px solid #E9D5FF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--wm-accent-primary);
+}
+
+.wm-user-info {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.wm-user-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--wm-text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.wm-user-email {
+  font-size: 11px;
+  color: var(--wm-text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.wm-btn-logout {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 14px;
+  background: transparent;
+  border: 1px solid var(--wm-border);
+  border-radius: var(--wm-radius-sm);
+  color: var(--wm-text-muted);
+  font-family: var(--wm-font-sans);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all var(--wm-transition-fast);
+}
+
+.wm-btn-logout:hover {
+  background: var(--wm-negative-bg);
+  border-color: var(--wm-negative-border);
+  color: var(--wm-negative);
+}
+
+.wm-btn-logout:focus-visible {
+  outline: 2px solid var(--wm-negative);
+  outline-offset: 2px;
+}
+
+/* ==========================================================================
+   Responsive Shell (Mobile & Tablet - Light System)
+   ========================================================================== */
+
+.wm-mobile-bar,
+.wm-mobile-drawer,
+.wm-mobile-drawer-overlay {
+  display: none;
+}
+
+@media (max-width: 1023px) {
+  body > div#root > div {
+    flex-direction: column !important;
+  }
+
+  .wm-sidebar-desktop {
+    display: none !important;
+  }
+
+  /* Mobile Sticky Header */
+  .wm-mobile-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 64px;
+    padding: 0 20px;
+    background-color: #FFFFFF;
+    border-bottom: 1px solid var(--wm-border);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    width: 100%;
+  }
+
+  .wm-mobile-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    color: var(--wm-text-primary);
+  }
+
+  .wm-mobile-menu-btn {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #FFFFFF;
+    border: 1px solid var(--wm-border);
+    border-radius: var(--wm-radius-sm);
+    color: var(--wm-text-primary);
+    cursor: pointer;
+    transition: all var(--wm-transition-fast);
+  }
+
+  .wm-mobile-menu-btn:hover {
+    border-color: var(--wm-accent-primary);
+    color: var(--wm-accent-primary);
+    background: var(--wm-bg-lavender);
+  }
+
+  .wm-mobile-menu-btn:focus-visible {
+    outline: 2px solid var(--wm-accent-primary);
+    outline-offset: 2px;
+  }
+
+  /* Off-canvas Drawer Overlay */
+  .wm-mobile-drawer-overlay {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.35);
+    backdrop-filter: blur(4px);
+    z-index: 150;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--wm-transition-base);
+  }
+
+  .wm-mobile-drawer-overlay.open {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  /* Off-canvas Drawer */
+  .wm-mobile-drawer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 280px;
+    height: 100vh;
+    background-color: #FFFFFF;
+    border-right: 1px solid var(--wm-border);
+    z-index: 160;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 24px 0 20px 0;
+    transform: translateX(-100%);
+    transition: transform var(--wm-transition-smooth);
+    box-shadow: 4px 0 24px rgba(0, 0, 0, 0.1);
+  }
+
+  .wm-mobile-drawer.open {
+    transform: translateX(0);
+  }
+
+  .wm-drawer-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px 20px 20px;
+    border-bottom: 1px solid var(--wm-border-subtle);
+  }
+
+  .wm-drawer-close-btn {
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: 1px solid var(--wm-border);
+    border-radius: var(--wm-radius-sm);
+    color: var(--wm-text-secondary);
+    cursor: pointer;
+  }
+
+  .wm-drawer-close-btn:hover {
+    color: var(--wm-text-primary);
+    border-color: var(--wm-text-primary);
+  }
+}
+
+/* ==========================================================================
+   Backwards Compatibility Overrides for Existing Pages (Light System)
+   ========================================================================== */
+
+.glass-card {
+  background: var(--wm-surface) !important;
+  border: 1px solid var(--wm-border) !important;
+  border-radius: var(--wm-radius-md) !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03) !important;
+  color: var(--wm-text-primary) !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  transition: border-color var(--wm-transition-base), box-shadow var(--wm-transition-base) !important;
+}
+
+.glass-card:hover {
+  transform: none !important;
+  border-color: var(--wm-border-bright) !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05) !important;
+}
+
+.btn-primary {
+  background: var(--wm-accent-primary) !important;
+  border: 1px solid var(--wm-accent-primary) !important;
+  border-radius: var(--wm-radius-sm) !important;
+  color: #FFFFFF !important;
+  font-family: var(--wm-font-sans) !important;
+  font-weight: 700 !important;
+  font-size: 13px !important;
+  letter-spacing: 0.06em !important;
+  text-transform: uppercase !important;
+  cursor: pointer !important;
+  box-shadow: 0 2px 6px rgba(139, 0, 255, 0.2) !important;
+  transition: all var(--wm-transition-fast) !important;
+}
+
+.btn-primary:hover {
+  background: var(--wm-accent-hover) !important;
+  border-color: var(--wm-accent-hover) !important;
+  box-shadow: 0 4px 14px rgba(139, 0, 255, 0.3) !important;
+  transform: none !important;
+}
+
+.glass-input {
+  background: #FFFFFF !important;
+  border: 1px solid var(--wm-border-bright) !important;
+  color: var(--wm-text-primary) !important;
+  border-radius: var(--wm-radius-sm) !important;
+  font-size: 14px !important;
+  outline: none !important;
+  transition: border-color var(--wm-transition-fast), box-shadow var(--wm-transition-fast) !important;
+}
+
+.glass-input::placeholder {
+  color: var(--wm-text-dim) !important;
+}
+
+.glass-input:focus {
+  border-color: var(--wm-accent-primary) !important;
+  box-shadow: 0 0 0 3px rgba(139, 0, 255, 0.12) !important;
+}
+
+.glass-nav {
+  background: var(--wm-bg-primary) !important;
+  border-bottom: 1px solid var(--wm-border) !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+/* ==========================================================================
+   Dashboard Editorial Styles (Phase 3)
+   ========================================================================== */
+
+/* Main layout container */
+.wm-dash-main {
+  flex: 1;
+  padding: 48px 56px 80px 56px;
+  overflow-y: auto;
+  position: relative;
+  background-color: var(--wm-bg-primary);
+  color: var(--wm-text-primary);
+}
+
+@media (max-width: 1023px) {
+  .wm-dash-main {
+    padding: 24px 20px 48px 20px;
+  }
+}
+
+/* Hero Section */
+.wm-dash-hero {
+  margin-bottom: 56px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 32px;
+  flex-wrap: wrap;
+}
+
+.wm-dash-hero-content {
+  max-width: 760px;
+}
+
+.wm-dash-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-shrink: 0;
+}
+
+/* Feature Panel for Net Worth & Chart */
+.wm-dash-feature-panel {
+  background: #FFFFFF;
+  border: 1px solid var(--wm-border);
+  border-radius: var(--wm-radius-md);
+  padding: 40px;
+  margin-bottom: 48px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+}
+
+.wm-dash-feature-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 28px;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.wm-dash-networth-val {
+  font-size: clamp(38px, 4.5vw, 64px);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.035em;
+  color: var(--wm-text-primary);
+  margin-top: 8px;
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.wm-dash-networth-sub {
+  font-size: 20px;
+  font-weight: 500;
+  color: var(--wm-text-muted);
+}
+
+/* Portfolio Allocation Bar */
+.wm-allocation-bar {
+  display: flex;
+  height: 8px;
+  width: 100%;
+  border-radius: 4px;
+  overflow: hidden;
+  background: var(--wm-bg-gray);
+  margin: 24px 0 16px 0;
+}
+
+.wm-allocation-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--wm-border-subtle);
+}
+
+.wm-allocation-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.wm-allocation-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--wm-text-muted);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.wm-allocation-value {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--wm-text-primary);
+}
+
+.wm-allocation-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 2px;
+}
+
+/* Asymmetric Metrics Grid */
+.wm-dash-metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 24px;
+  margin-bottom: 56px;
+}
+
+.wm-metric-card {
+  background: #FFFFFF;
+  border: 1px solid var(--wm-border);
+  border-radius: var(--wm-radius-md);
+  padding: 28px 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 160px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+  transition: border-color var(--wm-transition-fast), box-shadow var(--wm-transition-fast);
+}
+
+.wm-metric-card:hover {
+  border-color: var(--wm-border-bright);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+}
+
+.wm-metric-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.wm-metric-card-num {
+  font-size: clamp(26px, 2.5vw, 36px);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: var(--wm-text-primary);
+  margin-top: 12px;
+}
+
+.wm-metric-card-footer {
+  font-size: 12px;
+  font-weight: 600;
+  margin-top: 12px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Two-column Asymmetric Editorial Section */
+.wm-dash-split-grid {
+  display: grid;
+  grid-template-columns: 1.25fr 1fr;
+  gap: 32px;
+  margin-bottom: 64px;
+}
+
+@media (max-width: 1023px) {
+  .wm-dash-split-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Editorial List for Recent Activity */
+.wm-activity-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.wm-activity-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 0;
+  border-bottom: 1px solid var(--wm-border-subtle);
+  transition: background-color var(--wm-transition-fast);
+}
+
+.wm-activity-item:last-child {
+  border-bottom: none;
+}
+
+.wm-activity-idx {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--wm-accent-primary);
+  width: 28px;
+}
+
+.wm-activity-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.wm-activity-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--wm-text-primary);
+}
+
+.wm-activity-meta {
+  font-size: 12px;
+  color: var(--wm-text-muted);
+}
+
+.wm-activity-amount {
+  font-size: 14px;
+  font-weight: 700;
+  text-align: right;
+}
+
+/* Custom Chart Tooltip */
+.wm-chart-tooltip {
+  background: #FFFFFF;
+  border: 1px solid var(--wm-border);
+  padding: 12px 16px;
+  border-radius: var(--wm-radius-sm);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  font-family: var(--wm-font-sans);
+}
+
+/* ==========================================================================
+   Transactions & Investments Editorial Styles (Phase 4)
+   ========================================================================== */
+
+/* Main page layout wrapper for subpages */
+.wm-page-main {
+  flex: 1;
+  padding: 48px 56px 80px 56px;
+  overflow-y: auto;
+  position: relative;
+  background-color: var(--wm-bg-primary);
+  color: var(--wm-text-primary);
+}
+
+@media (max-width: 1023px) {
+  .wm-page-main {
+    padding: 24px 20px 48px 20px;
+  }
+}
+
+/* Page Hero */
+.wm-page-hero {
+  margin-bottom: 48px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 32px;
+  flex-wrap: wrap;
+}
+
+.wm-page-hero-content {
+  max-width: 760px;
+}
+
+.wm-page-actions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-shrink: 0;
+  flex-wrap: wrap;
+}
+
+/* Horizontal Financial Summary Strip */
+.wm-summary-strip {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.wm-summary-box {
+  background: #FFFFFF;
+  border: 1px solid var(--wm-border);
+  border-radius: var(--wm-radius-md);
+  padding: 20px 24px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.wm-summary-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--wm-text-muted);
+}
+
+.wm-summary-value {
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--wm-text-primary);
+}
+
+/* Controls / Filter Bar */
+.wm-control-bar {
+  background: #FFFFFF;
+  border: 1px solid var(--wm-border);
+  border-radius: var(--wm-radius-md);
+  padding: 16px 20px;
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+}
+
+.wm-search-wrapper {
+  position: relative;
+  flex: 1;
+  min-width: 260px;
+}
+
+.wm-filter-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.wm-filter-btn {
+  padding: 8px 14px;
+  font-family: var(--wm-font-sans);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  border-radius: var(--wm-radius-sm);
+  background: transparent;
+  border: 1px solid var(--wm-border);
+  color: var(--wm-text-muted);
+  cursor: pointer;
+  transition: all var(--wm-transition-fast);
+}
+
+.wm-filter-btn:hover {
+  color: var(--wm-text-primary);
+  border-color: var(--wm-border-bright);
+  background: var(--wm-bg-secondary);
+}
+
+.wm-filter-btn.active {
+  background: var(--wm-bg-lavender);
+  border-color: rgba(139, 0, 255, 0.35);
+  color: var(--wm-accent-primary);
+}
+
+/* Table Card Wrapper */
+.wm-table-card {
+  background: #FFFFFF;
+  border: 1px solid var(--wm-border);
+  border-radius: var(--wm-radius-md);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+  overflow-x: auto;
+}
+
+/* Investment Property Editorial Card */
+.wm-asset-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+  gap: 24px;
+  margin-bottom: 48px;
+}
+
+.wm-asset-card {
+  background: #FFFFFF;
+  border: 1px solid var(--wm-border);
+  border-radius: var(--wm-radius-md);
+  padding: 28px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+  transition: border-color var(--wm-transition-fast), box-shadow var(--wm-transition-fast);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.wm-asset-card:hover {
+  border-color: var(--wm-border-bright);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
+}
+
+.wm-asset-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 20px;
+}
+
+.wm-asset-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  padding: 16px;
+  background: var(--wm-bg-secondary);
+  border: 1px solid var(--wm-border-subtle);
+  border-radius: var(--wm-radius-sm);
+  margin-top: 16px;
+}
+
+.wm-asset-stat-col {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+/* Badges and Tags */
+.wm-badge-positive {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--wm-positive-bg);
+  color: var(--wm-positive);
+  border: 1px solid var(--wm-positive-border);
+  padding: 4px 10px;
+  border-radius: var(--wm-radius-sm);
+  font-family: var(--wm-font-sans);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.wm-badge-negative {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--wm-negative-bg);
+  color: var(--wm-negative);
+  border: 1px solid var(--wm-negative-border);
+  padding: 4px 10px;
+  border-radius: var(--wm-radius-sm);
+  font-family: var(--wm-font-sans);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.wm-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  background: var(--wm-bg-secondary);
+  border: 1px solid var(--wm-border);
+  border-radius: var(--wm-radius-sm);
+  font-family: var(--wm-font-sans);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--wm-text-secondary);
+  white-space: nowrap;
+}
+
+/* ==========================================================================
+   Phase 5: Sliders, AI Advisory Memos & Scenarios
+   ========================================================================== */
+
+/* Custom Corporate Range Slider */
+.wm-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 6px;
+  background: var(--wm-border);
+  border-radius: 3px;
+  outline: none;
+  transition: background var(--wm-transition-fast);
+  cursor: pointer;
+}
+
+.wm-slider:hover {
+  background: var(--wm-border-bright);
+}
+
+.wm-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--wm-accent-primary);
+  border: 2px solid #FFFFFF;
+  box-shadow: 0 1px 4px rgba(139, 0, 255, 0.4);
+  cursor: pointer;
+  transition: transform var(--wm-transition-fast), box-shadow var(--wm-transition-fast);
+}
+
+.wm-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.15);
+  box-shadow: 0 2px 8px rgba(139, 0, 255, 0.6);
+}
+
+.wm-slider::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--wm-accent-primary);
+  border: 2px solid #FFFFFF;
+  box-shadow: 0 1px 4px rgba(139, 0, 255, 0.4);
+  cursor: pointer;
+}
+
+/* AI Advisory Memo Box */
+.wm-advisory-memo {
+  background: #FFFFFF;
+  border: 1px solid var(--wm-border);
+  border-left: 4px solid var(--wm-accent-primary);
+  border-radius: var(--wm-radius-md);
+  padding: 24px 28px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+  transition: border-color var(--wm-transition-fast), box-shadow var(--wm-transition-fast);
+}
+
+.wm-advisory-memo:hover {
+  border-color: var(--wm-border-bright);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
+}
+
+/* User Query Bubble */
+.wm-client-query {
+  background: var(--wm-bg-lavender);
+  border: 1px solid #E9D5FF;
+  border-radius: var(--wm-radius-md);
+  padding: 18px 24px;
+  color: var(--wm-text-primary);
+  box-shadow: 0 1px 2px rgba(139, 0, 255, 0.05);
+}
+
+/* Mic Pulse Animation */
+@keyframes wm-pulse-red {
+  0% { box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.4); }
+  70% { box-shadow: 0 0 0 10px rgba(220, 38, 38, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(220, 38, 38, 0); }
+}
+
+.wm-mic-listening {
+  background: #DC2626 !important;
+  color: #FFFFFF !important;
+  animation: wm-pulse-red 1.6s infinite !important;
+  border-color: #DC2626 !important;
+}
+
+/* Scenario Pill Switch */
+.wm-scenario-group {
+  display: inline-flex;
+  background: var(--wm-bg-secondary);
+  border: 1px solid var(--wm-border);
+  border-radius: var(--wm-radius-sm);
+  padding: 4px;
+  gap: 4px;
+}
+
+.wm-scenario-btn {
+  padding: 8px 18px;
+  font-family: var(--wm-font-sans);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  border: none;
+  border-radius: var(--wm-radius-sm);
+  background: transparent;
+  color: var(--wm-text-muted);
+  cursor: pointer;
+  transition: all var(--wm-transition-fast);
+}
+
+.wm-scenario-btn:hover {
+  color: var(--wm-text-primary);
+}
+
+.wm-scenario-btn.active {
+  background: var(--wm-accent-primary);
+  color: #FFFFFF;
+  box-shadow: 0 1px 4px rgba(139, 0, 255, 0.3);
+}
+
+/* ==========================================================================
+   Phase 6: Calendar, Budget & Settings Enterprise Styles
+   ========================================================================== */
+
+/* Calendar Workspace */
+.wm-calendar-day {
+  background: #FFFFFF;
+  border: 1px solid var(--wm-border);
+  border-radius: var(--wm-radius-sm);
+  padding: 8px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 82px;
+  transition: all var(--wm-transition-fast);
+}
+
+.wm-calendar-day:hover {
+  border-color: var(--wm-accent-primary);
+  background-color: var(--wm-surface-hover);
+}
+
+.wm-calendar-day.selected {
+  background-color: var(--wm-bg-lavender);
+  border-color: var(--wm-accent-primary);
+  box-shadow: 0 0 0 1px var(--wm-accent-primary);
+}
+
+.wm-calendar-day.today {
+  border-color: var(--wm-accent-primary);
+}
+
+/* Budget Cards */
+.wm-budget-card {
+  background: #FFFFFF;
+  border: 1px solid var(--wm-border);
+  border-radius: var(--wm-radius-md);
+  padding: 24px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: border-color var(--wm-transition-fast), box-shadow var(--wm-transition-fast);
+}
+
+.wm-budget-card:hover {
+  border-color: var(--wm-border-bright);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
+}
+
+.wm-progress-bar-bg {
+  width: 100%;
+  height: 8px;
+  background: var(--wm-bg-gray);
+  border-radius: 4px;
+  overflow: hidden;
+  margin: 12px 0 8px 0;
+}
+
+.wm-progress-bar-fill {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 0.3s ease;
+}
+
+/* Settings Workspace */
+.wm-settings-card {
+  background: #FFFFFF;
+  border: 1px solid var(--wm-border);
+  border-radius: var(--wm-radius-md);
+  padding: 32px;
+  margin-bottom: 24px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+}
+
+.wm-settings-header {
+  border-bottom: 1px solid var(--wm-border-subtle);
+  padding-bottom: 16px;
+  margin-bottom: 24px;
+}
+
+.wm-settings-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+}
+
+

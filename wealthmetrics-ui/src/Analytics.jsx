@@ -2,16 +2,17 @@ import React, { useState, useEffect } from 'react';
 import Sidebar from './Sidebar';
 import { 
   TrendingUp, 
+  TrendingDown, 
   ArrowUpRight, 
   AlertTriangle, 
   RefreshCw, 
-  CheckCircle,
-  Sparkles,
-  TrendingDown,
-  Volume2,
-  Mic,
-  MicOff,
-  Search
+  CheckCircle, 
+  Sparkles, 
+  Volume2, 
+  Mic, 
+  Search,
+  ShieldAlert,
+  ArrowRight
 } from 'lucide-react';
 import { 
   ResponsiveContainer, 
@@ -24,14 +25,16 @@ import {
   Bar, 
   Cell 
 } from 'recharts';
+import { useNavigate } from 'react-router-dom';
 
 function Analytics() {
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [speakingInsightIdx, setSpeakingInsightIdx] = useState(null);
   const [filterQuery, setFilterQuery] = useState('');
   const [isListening, setIsListening] = useState(false);
 
-  // Mock data for AI Expense Analysis
+  // Existing Financial Intelligence Data
   const comparisonData = {
     currentMonthOutflow: 59600,
     previousMonthOutflow: 50200,
@@ -42,12 +45,7 @@ function Analytics() {
 
   const unusualSpending = [
     { id: 1, title: 'Swiggy / Zomato Food Delivery', category: 'Food & Dining', normalAverage: 12000, currentSpent: 20264, deviation: 68, icon: AlertTriangle, status: 'Critical' },
-    { id: 2, title: 'Amazon Electronics', category: 'Shopping', normalAverage: 5000, currentSpent: 10200, deviation: 104, icon: ArrowUpRight, status: 'Warning' }
-  ];
-
-  const overspendingCategories = [
-    { category: 'Food & Dining', budget: 15000, spent: 20264, overBy: 5264 },
-    { category: 'Shopping', budget: 8000, spent: 10200, overBy: 2200 }
+    { id: 2, title: 'Amazon Electronics', category: 'Shopping & Hardware', normalAverage: 5000, currentSpent: 10200, deviation: 104, icon: ArrowUpRight, status: 'Warning' }
   ];
 
   const recurringSubscriptions = [
@@ -76,16 +74,16 @@ function Analytics() {
   ];
 
   const aiInsights = [
-    { text: "Food & Dining expenses increased by 39.7% compared to last month due to high Swiggy delivery volume.", type: 'negative' },
-    { text: "Shopping exceeded your average monthly allowance by ₹5,200.", type: 'negative' },
-    { text: "Reducing restaurant orders by ₹2,500/month could save you ₹30,000/year.", type: 'positive' },
-    { text: "Tech utility fees decreased by 5.8% due to AWS instance termination.", type: 'positive' }
+    { text: "Food & Dining expenses increased by 39.7% compared to last month due to high delivery volume.", type: 'negative' },
+    { text: "Shopping exceeded your monthly budget allowance by ₹5,200 across electronic hardware.", type: 'negative' },
+    { text: "Reducing restaurant orders by ₹2,500/month redirects ₹30,000/year to mutual fund equity.", type: 'positive' },
+    { text: "Tech utility fees decreased by 5.8% due to terminated dormant AWS instances.", type: 'positive' }
   ];
 
   useEffect(() => {
     const timer = setTimeout(() => {
       setLoading(false);
-    }, 800);
+    }, 600);
     return () => {
       clearTimeout(timer);
       if (window.speechSynthesis) {
@@ -149,44 +147,28 @@ function Analytics() {
 
   if (loading) {
     return (
-      <div style={{ display: 'flex', minHeight: '100vh', backgroundColor: '#f8fafc', color: '#0f172a' }}>
+      <div style={{ display: 'flex', minHeight: '100vh', backgroundColor: '#FFFFFF' }}>
         <Sidebar />
-        <main style={{ flex: 1, padding: '32px 40px', overflowY: 'auto' }}>
+        <main className="wm-page-main">
           {/* Header Skeleton */}
-          <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '32px' }}>
-            <div>
-              <div className="skeleton" style={{ width: '220px', height: '32px', marginBottom: '8px' }}></div>
-              <div className="skeleton" style={{ width: '300px', height: '16px' }}></div>
-            </div>
-            <div className="skeleton" style={{ width: '130px', height: '40px' }}></div>
+          <div style={{ marginBottom: '40px' }}>
+            <div className="skeleton" style={{ width: '180px', height: '14px', marginBottom: '14px' }}></div>
+            <div className="skeleton" style={{ width: '460px', height: '48px', marginBottom: '16px' }}></div>
+            <div className="skeleton" style={{ width: '580px', height: '20px' }}></div>
           </div>
 
-          {/* Top Cards Skeleton */}
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '20px', marginBottom: '32px' }}>
-            <div className="glass-card" style={{ padding: '24px', height: '120px' }}>
-              <div className="skeleton" style={{ width: '120px', height: '16px', marginBottom: '16px' }}></div>
-              <div className="skeleton" style={{ width: '160px', height: '32px' }}></div>
-            </div>
-            <div className="glass-card" style={{ padding: '24px', height: '120px' }}>
-              <div className="skeleton" style={{ width: '120px', height: '16px', marginBottom: '16px' }}></div>
-              <div className="skeleton" style={{ width: '160px', height: '32px' }}></div>
-            </div>
-            <div className="glass-card" style={{ padding: '24px', height: '120px' }}>
-              <div className="skeleton" style={{ width: '120px', height: '16px', marginBottom: '16px' }}></div>
-              <div className="skeleton" style={{ width: '160px', height: '32px' }}></div>
-            </div>
+          {/* Strip Skeleton */}
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '16px', marginBottom: '32px' }}>
+            <div className="skeleton" style={{ height: '100px' }}></div>
+            <div className="skeleton" style={{ height: '100px' }}></div>
+            <div className="skeleton" style={{ height: '100px' }}></div>
+            <div className="skeleton" style={{ height: '100px' }}></div>
           </div>
 
-          {/* Double Grid Charts Skeleton */}
+          {/* Charts Skeleton */}
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px', marginBottom: '32px' }}>
-            <div className="glass-card" style={{ padding: '24px', height: '300px' }}>
-              <div className="skeleton" style={{ width: '200px', height: '20px', marginBottom: '24px' }}></div>
-              <div className="skeleton" style={{ width: '100%', height: '200px' }}></div>
-            </div>
-            <div className="glass-card" style={{ padding: '24px', height: '300px' }}>
-              <div className="skeleton" style={{ width: '200px', height: '20px', marginBottom: '24px' }}></div>
-              <div className="skeleton" style={{ width: '100%', height: '200px' }}></div>
-            </div>
+            <div className="skeleton" style={{ height: '320px' }}></div>
+            <div className="skeleton" style={{ height: '320px' }}></div>
           </div>
         </main>
       </div>
@@ -194,63 +176,71 @@ function Analytics() {
   }
 
   return (
-    <div style={{ display: 'flex', minHeight: '100vh', background: 'radial-gradient(at 0% 0%, rgba(79, 70, 229, 0.05) 0px, transparent 50%), radial-gradient(at 50% 0%, rgba(37, 99, 235, 0.06) 0px, transparent 50%), radial-gradient(at 100% 100%, rgba(99, 102, 241, 0.04) 0px, transparent 50%), #f1f5f9', color: '#0f172a', position: 'relative', overflow: 'hidden' }}>
-      
-      {/* Background glow blobs */}
-      <div style={{ position: 'absolute', width: '400px', height: '400px', background: 'rgba(79, 70, 229, 0.03)', filter: 'blur(120px)', borderRadius: '50%', top: '20%', right: '5%', zIndex: 0 }}></div>
-
+    <div style={{ display: 'flex', minHeight: '100vh', backgroundColor: '#FFFFFF' }}>
       <Sidebar />
 
-      <main style={{ flex: 1, padding: '32px 40px', overflowY: 'auto', zIndex: 1, position: 'relative' }}>
+      <main className="wm-page-main">
         
-        {/* Header */}
-        <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '32px' }}>
-          <div>
-            <h1 style={{ fontSize: '24px', fontWeight: '700', display: 'flex', alignItems: 'center', gap: '10px', color: '#0f172a' }}>
-              <Sparkles size={24} color="#4f46e5" /> AI Expense Analyzer
-              <span style={{ background: 'linear-gradient(135deg, #06b6d4, #3b82f6)', color: '#ffffff', padding: '3px 8px', borderRadius: '12px', fontSize: '10px', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.5px', marginLeft: '6px', boxShadow: '0 2px 6px rgba(6, 182, 212, 0.2)' }}>Insight Engine</span>
+        {/* ------------------------------------------------------------------
+            SECTION 1: EDITORIAL HERO & CONTROLS
+            ------------------------------------------------------------------ */}
+        <section className="wm-page-hero">
+          <div className="wm-page-hero-content">
+            <span className="wm-eyebrow">Financial Intelligence & Cashflow Audit</span>
+            <h1 className="wm-hero-title">
+              Understand<br />
+              Where Your<br />
+              Money Moves.
             </h1>
-            <p style={{ color: '#475569', fontSize: '13px', marginTop: '4px' }}>AI-powered anomalies, recurring patterns, and smart cashflow audits.</p>
+            <div className="wm-accent-bar" />
+            <p className="wm-body-lead" style={{ margin: '16px 0 0 0', maxWidth: '640px' }}>
+              Algorithmic expense intelligence auditing month-over-month variances, anomaly spikes, and capital redirection targets.
+            </p>
           </div>
-          
-          <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
-            {/* Glowing mic filter query search */}
+
+          <div className="wm-page-actions">
+            {/* Search + Speech Recognition Bar */}
             <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
-              <Search size={16} color="#94a3b8" style={{ position: 'absolute', left: '12px' }} />
+              <Search 
+                size={16} 
+                color="#9CA3AF" 
+                style={{ position: 'absolute', left: '14px', pointerEvents: 'none' }} 
+              />
               <input 
                 type="text" 
-                className="glass-input" 
-                placeholder={isListening ? "Listening..." : "Filter results (e.g. AWS)..."}
+                className="wm-input" 
+                placeholder={isListening ? "Listening... Speak now..." : "Filter audit (e.g. Swiggy, AWS)..."} 
                 style={{ 
-                  paddingLeft: '36px', 
-                  paddingRight: '40px', 
-                  width: '240px', 
-                  height: '38px',
-                  borderColor: isListening ? '#ef4444' : '#cbd5e1',
-                  boxShadow: isListening ? '0 0 10px rgba(239, 68, 68, 0.3)' : 'none'
-                }} 
+                  paddingLeft: '40px', 
+                  paddingRight: '48px', 
+                  width: '260px',
+                  borderColor: isListening ? '#DC2626' : undefined
+                }}
                 value={filterQuery}
                 onChange={(e) => setFilterQuery(e.target.value)}
+                aria-label="Filter expense analytics"
               />
               <button 
+                type="button"
                 onClick={startListening}
+                className={isListening ? 'wm-mic-listening' : ''}
                 style={{
                   position: 'absolute',
                   right: '6px',
-                  border: 'none',
-                  background: isListening ? '#ef4444' : 'transparent',
-                  color: isListening ? '#ffffff' : '#475569',
-                  borderRadius: '6px',
-                  cursor: 'pointer',
-                  width: '26px',
-                  height: '26px',
+                  width: '32px',
+                  height: '32px',
+                  borderRadius: '4px',
+                  border: '1px solid var(--wm-border)',
+                  background: isListening ? '#DC2626' : 'var(--wm-bg-secondary)',
+                  color: isListening ? '#FFFFFF' : 'var(--wm-text-secondary)',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  transition: 'all 0.2s',
-                  boxShadow: isListening ? '0 2px 6px rgba(239, 68, 68, 0.3)' : 'none'
+                  cursor: 'pointer',
+                  transition: 'all 0.2s'
                 }}
-                title="Voice Search"
+                aria-label="Voice filter input"
+                title="Voice Search (Speech-to-text)"
               >
                 <Mic size={14} />
               </button>
@@ -259,99 +249,146 @@ function Analytics() {
             <button 
               onClick={() => {
                 setLoading(true);
-                setTimeout(() => setLoading(false), 500);
+                setTimeout(() => setLoading(false), 400);
               }} 
-              style={{ 
-                display: 'flex', 
-                alignItems: 'center', 
-                gap: '8px', 
-                background: '#ffffff', 
-                border: '1px solid #cbd5e1', 
-                color: '#475569', 
-                padding: '8px 16px', 
-                borderRadius: '8px', 
-                cursor: 'pointer',
-                fontSize: '13px',
-                fontWeight: '500',
-                boxShadow: '0 1px 2px rgba(0,0,0,0.05)'
-              }}
+              className="wm-btn wm-btn-outline"
+              aria-label="Refresh financial audit"
             >
-              <RefreshCw size={14} /> Refresh Audit
+              <RefreshCw size={14} /> Re-Audit
             </button>
           </div>
-        </header>
+        </section>
 
-        {/* Top Summary Cards */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '20px', marginBottom: '32px' }}>
+        {/* ------------------------------------------------------------------
+            SECTION 2: FINANCIAL INTELLIGENCE SUMMARY STRIP
+            ------------------------------------------------------------------ */}
+        <section className="wm-summary-strip">
+          <div className="wm-summary-box">
+            <span className="wm-summary-label">Current Outflow Audit</span>
+            <div className="wm-summary-value" style={{ color: '#111111' }}>
+              ₹ {comparisonData.currentMonthOutflow.toLocaleString()}
+            </div>
+            <span style={{ fontSize: '11px', color: '#DC2626', fontWeight: '700', display: 'flex', alignItems: 'center', gap: '4px' }}>
+              <ArrowUpRight size={14} /> +{comparisonData.changePercentage}% MoM vs ₹{comparisonData.previousMonthOutflow.toLocaleString()}
+            </span>
+          </div>
+
+          <div className="wm-summary-box">
+            <span className="wm-summary-label">Over-Budget Deviation</span>
+            <div className="wm-summary-value" style={{ color: '#DC2626' }}>
+              ₹ 7,464
+            </div>
+            <span style={{ fontSize: '11px', color: '#DC2626', fontWeight: '600' }}>
+              Food & Shopping limits breached
+            </span>
+          </div>
+
+          <div className="wm-summary-box">
+            <span className="wm-summary-label">Potential Yearly Savings</span>
+            <div className="wm-summary-value" style={{ color: '#8B00FF' }}>
+              ₹ {comparisonData.estimatedSavings.toLocaleString()}
+            </div>
+            <span style={{ fontSize: '11px', color: '#059669', fontWeight: '600' }}>
+              Via ₹2,500/mo restaurant optimization
+            </span>
+          </div>
+
+          <div className="wm-summary-box">
+            <span className="wm-summary-label">Recurring Mandates</span>
+            <div className="wm-summary-value" style={{ color: '#111111' }}>
+              {recurringSubscriptions.length} Subscriptions
+            </div>
+            <span style={{ fontSize: '11px', color: '#6B7280', fontWeight: '600' }}>
+              ₹ 42,038 / mo automated debit
+            </span>
+          </div>
+        </section>
+
+        {/* ------------------------------------------------------------------
+            SECTION 3: SPENDING VISUALIZATION (CHARTS)
+            ------------------------------------------------------------------ */}
+        <div className="wm-dash-split-grid">
           
-          <div className="glass-card" style={{ padding: '24px' }}>
-            <span style={{ fontSize: '13px', color: '#475569' }}>Current Outflow Audit</span>
-            <div style={{ display: 'flex', alignItems: 'baseline', gap: '10px', marginTop: '10px' }}>
-              <h2 style={{ fontSize: '28px', fontWeight: '700', color: '#0f172a' }}>₹ 59,600</h2>
-              <span style={{ color: '#ef4444', fontSize: '13px', fontWeight: '600', display: 'flex', alignItems: 'center' }}>
-                <ArrowUpRight size={16} /> +18.7% MoM
-              </span>
+          {/* Historical Cash Outflow Trend */}
+          <div className="wm-card">
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '20px' }}>
+              <div>
+                <span className="wm-eyebrow">6-Month Trajectory</span>
+                <h3 className="wm-card-heading" style={{ margin: '4px 0 0 0' }}>
+                  Historical Cash Outflow Trend
+                </h3>
+              </div>
+              <span className="wm-tag">Audited</span>
             </div>
-            <p style={{ color: '#475569', fontSize: '12px', marginTop: '8px' }}>vs ₹50,200 last month</p>
-          </div>
 
-          <div className="glass-card" style={{ padding: '24px' }}>
-            <span style={{ fontSize: '13px', color: '#475569' }}>Over-Budget Alert</span>
-            <div style={{ display: 'flex', alignItems: 'baseline', gap: '10px', marginTop: '10px' }}>
-              <h2 style={{ fontSize: '28px', fontWeight: '700', color: '#be123c' }}>₹ 7,464</h2>
-              <span style={{ color: '#be123c', fontSize: '12px', fontWeight: '600' }}>across 2 categories</span>
-            </div>
-            <p style={{ color: '#475569', fontSize: '12px', marginTop: '8px' }}>Food and Shopping limits breached</p>
-          </div>
-
-          <div className="glass-card" style={{ padding: '24px', background: 'linear-gradient(135deg, rgba(79, 70, 229, 0.05) 0%, rgba(255, 255, 255, 1) 100%)', border: '1px solid rgba(79, 70, 229, 0.15)' }}>
-            <span style={{ fontSize: '13px', color: '#475569' }}>Potential Yearly Savings</span>
-            <div style={{ display: 'flex', alignItems: 'baseline', gap: '10px', marginTop: '10px' }}>
-              <h2 style={{ fontSize: '28px', fontWeight: '700', color: '#4f46e5' }}>₹ 30,000</h2>
-              <span style={{ color: '#4f46e5', fontSize: '12px', fontWeight: '600' }}>Estimated</span>
-            </div>
-            <p style={{ color: '#475569', fontSize: '12px', marginTop: '8px' }}>If restaurant spending reduces by ₹2.5k/mo</p>
-          </div>
-
-        </div>
-
-        {/* Charts Section */}
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px', marginBottom: '32px' }}>
-          
-          {/* Spending Trend Chart */}
-          <div className="glass-card" style={{ padding: '24px' }}>
-            <h3 style={{ fontSize: '16px', fontWeight: '600', marginBottom: '20px', color: '#0f172a' }}>Historical Cash Outflow Trend</h3>
-            <div style={{ width: '100%', height: '260px' }}>
+            <div style={{ width: '100%', height: '280px' }}>
               <ResponsiveContainer width="100%" height="100%">
                 <AreaChart data={trendData}>
                   <defs>
-                    <linearGradient id="auditedOutflow" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#ef4444" stopOpacity={0.15}/>
-                      <stop offset="95%" stopColor="#ef4444" stopOpacity={0}/>
+                    <linearGradient id="wmAnalyticsOutflow" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="#8B00FF" stopOpacity={0.18}/>
+                      <stop offset="95%" stopColor="#8B00FF" stopOpacity={0}/>
                     </linearGradient>
                   </defs>
-                  <XAxis dataKey="month" stroke="#475569" />
-                  <YAxis stroke="#475569" />
-                  <Tooltip contentStyle={{ background: '#ffffff', borderColor: '#cbd5e1', borderRadius: '10px', color: '#0f172a' }} />
-                  <Area type="monotone" dataKey="Outflow" name="Total Outflow" stroke="#ef4444" fillOpacity={1} fill="url(#auditedOutflow)" strokeWidth={2.5} />
+                  <XAxis dataKey="month" stroke="#9CA3AF" tick={{ fill: '#374151', fontSize: 12, fontWeight: 600 }} />
+                  <YAxis stroke="#9CA3AF" tick={{ fill: '#374151', fontSize: 12, fontWeight: 600 }} tickFormatter={(v) => `₹${v/1000}k`} />
+                  <Tooltip 
+                    contentStyle={{ 
+                      background: '#FFFFFF', 
+                      borderColor: '#E5E7EB', 
+                      borderRadius: '4px', 
+                      boxShadow: '0 4px 14px rgba(0,0,0,0.08)',
+                      fontFamily: 'Inter, sans-serif'
+                    }} 
+                    formatter={(val) => [`₹${val.toLocaleString()}`, 'Total Outflow']}
+                  />
+                  <Area 
+                    type="monotone" 
+                    dataKey="Outflow" 
+                    name="Total Outflow" 
+                    stroke="#8B00FF" 
+                    fillOpacity={1} 
+                    fill="url(#wmAnalyticsOutflow)" 
+                    strokeWidth={2.5} 
+                  />
                 </AreaChart>
               </ResponsiveContainer>
             </div>
           </div>
 
-          {/* Category changes */}
-          <div className="glass-card" style={{ padding: '24px' }}>
-            <h3 style={{ fontSize: '16px', fontWeight: '600', marginBottom: '20px', color: '#0f172a' }}>Category Outflow Comparison (MoM)</h3>
-            <div style={{ width: '100%', height: '260px' }}>
+          {/* Category Outflow Comparison (MoM) */}
+          <div className="wm-card">
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '20px' }}>
+              <div>
+                <span className="wm-eyebrow">Categorical Variances</span>
+                <h3 className="wm-card-heading" style={{ margin: '4px 0 0 0' }}>
+                  Category Outflow Comparison (MoM)
+                </h3>
+              </div>
+              <span className="wm-tag">Last vs This Month</span>
+            </div>
+
+            <div style={{ width: '100%', height: '280px' }}>
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={categoryComparison}>
-                  <XAxis dataKey="name" stroke="#475569" fontSize={11} />
-                  <YAxis stroke="#475569" fontSize={11} />
-                  <Tooltip contentStyle={{ background: '#ffffff', borderColor: '#cbd5e1', borderRadius: '10px', color: '#0f172a' }} />
-                  <Bar dataKey="LastMonth" name="Last Month Outflow" fill="#cbd5e1" radius={[4, 4, 0, 0]} />
-                  <Bar dataKey="ThisMonth" name="This Month Outflow" fill="#4f46e5" radius={[4, 4, 0, 0]}>
+                  <XAxis dataKey="name" stroke="#9CA3AF" tick={{ fill: '#374151', fontSize: 11, fontWeight: 600 }} />
+                  <YAxis stroke="#9CA3AF" tick={{ fill: '#374151', fontSize: 11, fontWeight: 600 }} tickFormatter={(v) => `₹${v/1000}k`} />
+                  <Tooltip 
+                    contentStyle={{ 
+                      background: '#FFFFFF', 
+                      borderColor: '#E5E7EB', 
+                      borderRadius: '4px', 
+                      boxShadow: '0 4px 14px rgba(0,0,0,0.08)',
+                      fontFamily: 'Inter, sans-serif'
+                    }} 
+                  />
+                  <Bar dataKey="LastMonth" name="Prior Month" fill="#E5E7EB" radius={[2, 2, 0, 0]} />
+                  <Bar dataKey="ThisMonth" name="Current Month" fill="#8B00FF" radius={[2, 2, 0, 0]}>
                     {categoryComparison.map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={entry.change > 20 ? '#ef4444' : entry.change < 0 ? '#10b981' : '#4f46e5'} />
+                      <Cell 
+                        key={`cell-${index}`} 
+                        fill={entry.change > 20 ? '#DC2626' : entry.change < 0 ? '#059669' : '#8B00FF'} 
+                      />
                     ))}
                   </Bar>
                 </BarChart>
@@ -361,13 +398,28 @@ function Analytics() {
 
         </div>
 
-        {/* AI Insights & Anomaly Detection */}
-        <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: '24px', marginBottom: '32px' }}>
+        {/* ------------------------------------------------------------------
+            SECTION 4: ANOMALY DETECTION & AI-GENERATED INSIGHTS
+            ------------------------------------------------------------------ */}
+        <div className="wm-dash-split-grid" style={{ marginBottom: '48px' }}>
           
           {/* Anomaly Detection */}
-          <div className="glass-card" style={{ padding: '24px' }}>
-            <h3 style={{ fontSize: '16px', fontWeight: '600', marginBottom: '16px', color: '#0f172a' }}>AI-Detected Unusual Outflows</h3>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+          <div className="wm-card">
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '20px' }}>
+              <div>
+                <span className="wm-eyebrow" style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                  <ShieldAlert size={14} color="#DC2626" /> Anomaly Detection Engine
+                </span>
+                <h3 className="wm-card-heading" style={{ margin: '4px 0 0 0' }}>
+                  AI-Detected Unusual Outflows
+                </h3>
+              </div>
+              <span className="wm-caption" style={{ fontWeight: '600' }}>
+                {filteredUnusual.length} Anomalies
+              </span>
+            </div>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
               {filteredUnusual.length > 0 ? (
                 filteredUnusual.map((item) => (
                   <div 
@@ -376,37 +428,68 @@ function Analytics() {
                       display: 'flex', 
                       alignItems: 'center', 
                       justifyContent: 'space-between', 
-                      padding: '14px 18px', 
-                      borderRadius: '12px', 
-                      background: item.status === 'Critical' ? '#fff5f5' : '#fffaf0',
-                      border: `1px solid ${item.status === 'Critical' ? '#feb2b2' : '#fbd38d'}`,
-                      boxShadow: '0 1px 3px rgba(0,0,0,0.02)'
+                      padding: '16px 20px', 
+                      borderRadius: '4px', 
+                      background: item.status === 'Critical' ? '#FEF2F2' : '#FFFBEB',
+                      border: `1px solid ${item.status === 'Critical' ? '#FECACA' : '#FDE68A'}`,
+                      transition: 'border-color 0.2s'
                     }}
                   >
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                      <div style={{ padding: '8px', borderRadius: '8px', background: item.status === 'Critical' ? '#fed7d7' : '#feebc8' }}>
-                        <item.icon size={20} color={item.status === 'Critical' ? '#c53030' : '#dd6b20'} />
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
+                      <div 
+                        style={{ 
+                          width: '36px', 
+                          height: '36px', 
+                          borderRadius: '4px', 
+                          background: item.status === 'Critical' ? '#FEE2E2' : '#FEF3C7',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center'
+                        }}
+                      >
+                        <item.icon size={18} color={item.status === 'Critical' ? '#DC2626' : '#D97706'} />
                       </div>
                       <div>
-                        <div style={{ fontSize: '14px', fontWeight: '600', color: item.status === 'Critical' ? '#9b2c2c' : '#c05621' }}>{item.title}</div>
-                        <div style={{ fontSize: '12px', color: item.status === 'Critical' ? '#c53030' : '#dd6b20', marginTop: '2px' }}>Category: {item.category} • Normal: ₹{item.normalAverage.toLocaleString()}</div>
+                        <div style={{ fontSize: '14px', fontWeight: '700', color: '#111111' }}>
+                          {item.title}
+                        </div>
+                        <div style={{ fontSize: '12px', color: '#6B7280', marginTop: '2px' }}>
+                          {item.category} · Normal: ₹{item.normalAverage.toLocaleString()}
+                        </div>
                       </div>
                     </div>
                     <div style={{ textAlign: 'right' }}>
-                      <span style={{ fontSize: '14px', fontWeight: '700', color: item.status === 'Critical' ? '#9b2c2c' : '#c05621' }}>₹{item.currentSpent.toLocaleString()}</span>
-                      <div style={{ fontSize: '11px', color: item.status === 'Critical' ? '#9b2c2c' : '#c05621', marginTop: '2px', fontWeight: '600' }}>+{item.deviation}% Spike</div>
+                      <div style={{ fontSize: '15px', fontWeight: '800', color: item.status === 'Critical' ? '#DC2626' : '#D97706' }}>
+                        ₹{item.currentSpent.toLocaleString()}
+                      </div>
+                      <span className="wm-badge-negative" style={{ marginTop: '4px', fontSize: '10px', padding: '2px 8px' }}>
+                        +{item.deviation}% Spike
+                      </span>
                     </div>
                   </div>
                 ))
               ) : (
-                <div style={{ padding: '24px', textAlign: 'center', color: '#64748b', fontSize: '13px' }}>No anomalies found matching query.</div>
+                <div style={{ padding: '36px', textAlign: 'center', color: '#6B7280', fontSize: '13px' }}>
+                  No anomalies matching query filter.
+                </div>
               )}
             </div>
           </div>
 
-          {/* AI Advisor Insights */}
-          <div className="glass-card" style={{ padding: '24px' }}>
-            <h3 style={{ fontSize: '16px', fontWeight: '600', marginBottom: '16px', color: '#0f172a' }}>AI-Generated Insights (Listen enabled)</h3>
+          {/* AI Insights with Audio Synthesis */}
+          <div className="wm-card">
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '20px' }}>
+              <div>
+                <span className="wm-eyebrow" style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                  <Sparkles size={14} color="#8B00FF" /> Synthesized Findings
+                </span>
+                <h3 className="wm-card-heading" style={{ margin: '4px 0 0 0' }}>
+                  AI-Generated Intelligence (Audio Enabled)
+                </h3>
+              </div>
+              <span className="wm-tag">Voice Readout</span>
+            </div>
+
             <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
               {filteredInsights.length > 0 ? (
                 filteredInsights.map((insight, idx) => (
@@ -416,92 +499,145 @@ function Analytics() {
                       display: 'flex', 
                       alignItems: 'center',
                       justifyContent: 'space-between',
-                      padding: '12px 16px', 
-                      borderRadius: '10px', 
-                      background: insight.type === 'negative' ? '#fff5f5' : '#f0fdf4',
-                      border: `1px solid ${insight.type === 'negative' ? '#feb2b2' : '#bbf7d0'}` 
+                      padding: '14px 18px', 
+                      borderRadius: '4px', 
+                      background: insight.type === 'negative' ? '#FAF5FF' : '#F0FDF4',
+                      border: `1px solid ${insight.type === 'negative' ? '#E9D5FF' : '#BBF7D0'}` 
                     }}
                   >
                     <div style={{ display: 'flex', gap: '12px', flex: 1, alignItems: 'center' }}>
-                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                      <div 
+                        style={{ 
+                          width: '28px', 
+                          height: '28px', 
+                          borderRadius: '4px', 
+                          background: insight.type === 'negative' ? '#F3E8FF' : '#DCFCE7',
+                          display: 'flex', 
+                          alignItems: 'center', 
+                          justifyContent: 'center',
+                          flexShrink: 0
+                        }}
+                      >
                         {insight.type === 'negative' ? (
-                          <div style={{ padding: '6px', borderRadius: '50%', background: '#fed7d7' }}><TrendingUp size={16} color="#c53030" /></div>
+                          <TrendingUp size={14} color="#8B00FF" />
                         ) : (
-                          <div style={{ padding: '6px', borderRadius: '50%', background: '#dcfce7' }}><TrendingDown size={16} color="#15803d" /></div>
+                          <TrendingDown size={14} color="#059669" />
                         )}
                       </div>
-                      <span style={{ fontSize: '13px', color: insight.type === 'negative' ? '#9b2c2c' : '#14532d', lineHeight: '1.5', fontWeight: '500' }}>{insight.text}</span>
+                      <span style={{ fontSize: '13px', color: '#111111', lineHeight: '1.5', fontWeight: '500' }}>
+                        {insight.text}
+                      </span>
                     </div>
 
                     <button 
                       onClick={() => speakInsight(insight.text, idx)}
                       style={{
-                        background: 'transparent',
-                        border: 'none',
-                        color: speakingInsightIdx === idx ? '#4f46e5' : '#64748b',
+                        background: speakingInsightIdx === idx ? 'var(--wm-bg-lavender)' : 'transparent',
+                        border: '1px solid var(--wm-border)',
+                        color: speakingInsightIdx === idx ? 'var(--wm-accent-primary)' : 'var(--wm-text-muted)',
                         cursor: 'pointer',
-                        padding: '6px',
+                        width: '32px',
+                        height: '32px',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        borderRadius: '50%',
-                        marginLeft: '12px'
+                        borderRadius: '4px',
+                        marginLeft: '12px',
+                        transition: 'all 0.2s'
                       }}
-                      title="Speak insight"
+                      aria-label="Listen to synthesized insight audio"
+                      title="Read aloud"
                     >
-                      <Volume2 size={16} className={speakingInsightIdx === idx ? 'animate-pulse' : ''} />
+                      <Volume2 size={16} />
                     </button>
                   </div>
                 ))
               ) : (
-                <div style={{ padding: '24px', textAlign: 'center', color: '#64748b', fontSize: '13px' }}>No insights found matching query.</div>
+                <div style={{ padding: '36px', textAlign: 'center', color: '#6B7280', fontSize: '13px' }}>
+                  No insights found matching filter query.
+                </div>
               )}
             </div>
           </div>
 
         </div>
 
-        {/* Subscription / Fixed Obligations Identifier */}
-        <div className="glass-card" style={{ padding: '24px' }}>
-          <h3 style={{ fontSize: '16px', fontWeight: '600', marginBottom: '16px', color: '#0f172a' }}>AI-Identified Recurring Subscriptions & Fixed Outflows</h3>
-          <div style={{ overflowX: 'auto' }}>
-            <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', fontSize: '14px' }}>
+        {/* ------------------------------------------------------------------
+            SECTION 5: RECURRING SUBSCRIPTIONS & FIXED DEBIT AUDIT
+            ------------------------------------------------------------------ */}
+        <section style={{ marginBottom: '40px' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '20px' }}>
+            <div>
+              <span className="wm-eyebrow">Automated Capital Outflows</span>
+              <h2 className="wm-card-heading" style={{ margin: '4px 0 0 0' }}>
+                AI-Identified Recurring Subscriptions & Fixed Mandates
+              </h2>
+            </div>
+            <span className="wm-caption" style={{ fontWeight: '600' }}>
+              {filteredSubscriptions.length} Verified Mandates
+            </span>
+          </div>
+
+          <div className="wm-table-card">
+            <table className="wm-table">
               <thead>
-                <tr style={{ borderBottom: '1px solid #e2e8f0', color: '#475569' }}>
-                  <th style={{ paddingBottom: '12px' }}>Mandate / Subscription</th>
-                  <th style={{ paddingBottom: '12px' }}>Frequency</th>
-                  <th style={{ paddingBottom: '12px' }}>Classification</th>
-                  <th style={{ paddingBottom: '12px' }}>Status</th>
-                  <th style={{ paddingBottom: '12px', textAlign: 'right' }}>Amount</th>
+                <tr>
+                  <th style={{ paddingLeft: '24px' }}>Mandate / Merchant</th>
+                  <th>Cadence</th>
+                  <th>Classification</th>
+                  <th>Status</th>
+                  <th style={{ textAlign: 'right', paddingRight: '24px' }}>Monthly Debit</th>
                 </tr>
               </thead>
               <tbody>
                 {filteredSubscriptions.length > 0 ? (
                   filteredSubscriptions.map((sub, idx) => (
-                    <tr key={idx} style={{ borderBottom: '1px solid #f1f5f9' }}>
-                      <td style={{ padding: '14px 0', fontWeight: '600', color: '#0f172a' }}>{sub.name}</td>
-                      <td style={{ color: '#475569' }}>{sub.frequency}</td>
+                    <tr key={idx}>
+                      <td style={{ padding: '16px 24px', fontWeight: '700', color: '#111111' }}>
+                        {sub.name}
+                      </td>
+                      <td style={{ color: '#374151', fontSize: '13px' }}>
+                        {sub.frequency}
+                      </td>
                       <td>
-                        <span style={{ padding: '3px 8px', borderRadius: '6px', background: sub.type === 'Investment' ? '#e0f2fe' : '#e0e7ff', color: sub.type === 'Investment' ? '#0369a1' : '#4f46e5', fontSize: '12px', fontWeight: '600', border: `1px solid ${sub.type === 'Investment' ? '#bae6fd' : '#c7d2fe'}` }}>
+                        <span className="wm-tag">
                           {sub.type}
                         </span>
                       </td>
                       <td>
-                        <span style={{ color: '#059669', fontSize: '12px', display: 'flex', alignItems: 'center', gap: '4px', fontWeight: '600' }}>
-                          <CheckCircle size={12} /> {sub.status}
+                        <span style={{ color: '#059669', fontSize: '12px', display: 'flex', alignItems: 'center', gap: '6px', fontWeight: '700' }}>
+                          <CheckCircle size={14} /> {sub.status}
                         </span>
                       </td>
-                      <td style={{ textAlign: 'right', fontWeight: '700', color: '#0f172a' }}>₹{sub.amount.toLocaleString()}</td>
+                      <td style={{ textAlign: 'right', fontWeight: '800', color: '#111111', fontSize: '15px', paddingRight: '24px' }}>
+                        ₹{sub.amount.toLocaleString()}
+                      </td>
                     </tr>
                   ))
                 ) : (
                   <tr>
-                    <td colSpan="5" style={{ padding: '24px', textAlign: 'center', color: '#64748b' }}>No subscriptions found matching query.</td>
+                    <td colSpan="5" style={{ padding: '36px', textAlign: 'center', color: '#6B7280' }}>
+                      No subscriptions found matching query.
+                    </td>
                   </tr>
                 )}
               </tbody>
             </table>
           </div>
+        </section>
+
+        {/* Deep Link to AI Advisor */}
+        <div style={{ marginTop: '32px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <span className="wm-caption">
+            Reconciled across automated banking feeds and OCR receipt ingestion.
+          </span>
+          <button 
+            onClick={() => navigate('/ai-advisor')}
+            className="wm-arrow-link"
+            aria-label="Consult AI Financial Advisor"
+          >
+            Consult AI Advisor on High Swiggy Burn Rate <ArrowRight size={14} className="wm-arrow-icon" />
+          </button>
         </div>
 
       </main>

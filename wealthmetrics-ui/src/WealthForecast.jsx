@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import Sidebar from './Sidebar';
 import { 
   LineChart as RechartsLineChart, 
@@ -14,10 +14,14 @@ import {
 } from 'recharts';
 import { 
   TrendingUp, 
-  Sparkles
+  Sparkles,
+  ShieldCheck,
+  ArrowRight
 } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 function WealthForecast() {
+  const navigate = useNavigate();
   // Input parameters state
   const [currentAge, setCurrentAge] = useState(28);
   const [retireAge, setRetireAge] = useState(60);
@@ -32,21 +36,7 @@ function WealthForecast() {
   const [forecastData, setForecastData] = useState([]);
   const [summaryMetrics, setSummaryMetrics] = useState({});
 
-  useEffect(() => {
-    calculateForecast();
-  }, [
-    currentAge, 
-    retireAge, 
-    currentNetWorth, 
-    monthlySavings, 
-    expectedReturn, 
-    inflation, 
-    salaryGrowth, 
-    propertyAppreciation, 
-    scenario
-  ]);
-
-  const calculateForecast = () => {
+  const calculateForecast = useCallback(() => {
     let adjustedReturn = expectedReturn / 100;
     let adjustedProperty = propertyAppreciation / 100;
     let adjustedSalary = salaryGrowth / 100;
@@ -130,105 +120,175 @@ function WealthForecast() {
         { name: 'Liquid Assets', value: retirement['Liquid Assets'] || 0 }
       ]
     });
-  };
+  }, [
+    currentAge, 
+    retireAge, 
+    currentNetWorth, 
+    monthlySavings, 
+    expectedReturn, 
+    inflation, 
+    salaryGrowth, 
+    propertyAppreciation, 
+    scenario
+  ]);
 
-  const COLORS = ['#3b82f6', '#4f46e5'];
+  useEffect(() => {
+    calculateForecast();
+  }, [calculateForecast]);
+
+  const PIE_COLORS = ['#8B00FF', '#06B6D4'];
 
   return (
-    <div style={{ display: 'flex', minHeight: '100vh', background: 'radial-gradient(at 0% 0%, rgba(79, 70, 229, 0.04) 0px, transparent 50%), radial-gradient(at 50% 0%, rgba(59, 130, 246, 0.05) 0px, transparent 50%), radial-gradient(at 100% 100%, rgba(99, 102, 241, 0.03) 0px, transparent 50%), #f8fafc', color: '#0f172a', position: 'relative', overflow: 'hidden' }}>
-      
-      {/* Background glow blobs */}
-      <div style={{ position: 'absolute', width: '350px', height: '350px', background: 'rgba(79, 70, 229, 0.03)', filter: 'blur(100px)', borderRadius: '50%', top: '20%', right: '15%', zIndex: 0 }}></div>
-
+    <div style={{ display: 'flex', minHeight: '100vh', backgroundColor: '#FFFFFF' }}>
       <Sidebar />
 
-      <main style={{ flex: 1, padding: '32px 40px', overflowY: 'auto', zIndex: 1, position: 'relative' }}>
+      <main className="wm-page-main">
         
-        {/* Header */}
-        <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '32px' }}>
-          <div>
-            <h1 style={{ fontSize: '24px', fontWeight: '700', display: 'flex', alignItems: 'center', gap: '10px', color: '#0f172a' }}>
-              <TrendingUp size={24} color="#4f46e5" /> Future Net Worth Forecast
+        {/* ------------------------------------------------------------------
+            SECTION 1: EDITORIAL HERO & SCENARIO SELECTOR
+            ------------------------------------------------------------------ */}
+        <section className="wm-page-hero">
+          <div className="wm-page-hero-content">
+            <span className="wm-eyebrow">Wealth Projection & Capital Modeling</span>
+            <h1 className="wm-hero-title">
+              Model<br />
+              What Comes<br />
+              Next.
             </h1>
-            <p style={{ color: '#475569', fontSize: '13px', marginTop: '4px' }}>Simulate compound interest scenarios to map your journey to financial freedom.</p>
+            <div className="wm-accent-bar" />
+            <p className="wm-body-lead" style={{ margin: '16px 0 0 0', maxWidth: '640px' }}>
+              Actuarial compound interest simulator modeling nominal wealth trajectory, inflation-adjusted purchasing power, and capital doubling timelines.
+            </p>
           </div>
 
-          {/* Scenario buttons */}
-          <div style={{ display: 'flex', background: '#ffffff', border: '1px solid #cbd5e1', borderRadius: '10px', padding: '4px', boxShadow: '0 1px 2px rgba(0,0,0,0.05)' }}>
-            {['conservative', 'moderate', 'aggressive'].map((scen) => (
-              <button
-                key={scen}
-                onClick={() => setScenario(scen)}
-                style={{
-                  padding: '8px 16px',
-                  borderRadius: '8px',
-                  background: scenario === scen ? 'linear-gradient(135deg, #4f46e5, #6d28d9)' : 'transparent',
-                  color: scenario === scen ? '#fff' : '#475569',
-                  fontWeight: '600',
-                  border: 'none',
-                  fontSize: '12px',
-                  textTransform: 'capitalize',
-                  cursor: 'pointer',
-                  transition: 'all 0.2s',
-                  boxShadow: scenario === scen ? '0 2px 6px rgba(79, 70, 229, 0.2)' : 'none'
-                }}
-              >
-                {scen}
-              </button>
-            ))}
+          <div className="wm-page-actions">
+            {/* Scenario Segmented Switch */}
+            <div className="wm-scenario-group" role="group" aria-label="Forecast scenarios">
+              {['conservative', 'moderate', 'aggressive'].map((scen) => (
+                <button
+                  key={scen}
+                  onClick={() => setScenario(scen)}
+                  className={`wm-scenario-btn ${scenario === scen ? 'active' : ''}`}
+                >
+                  {scen}
+                </button>
+              ))}
+            </div>
           </div>
-        </header>
+        </section>
 
-        {/* Input Parameters & Metrics Split */}
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 2fr', gap: '24px', marginBottom: '32px' }}>
-          
-          {/* Sliders and Controls */}
-          <div className="glass-card" style={{ padding: '24px', display: 'flex', flexDirection: 'column', gap: '20px' }}>
-            <h3 style={{ fontSize: '16px', fontWeight: '600', borderBottom: '1px solid #e2e8f0', paddingBottom: '12px', color: '#0f172a' }}>Simulation Inputs</h3>
-            
-            {/* Age sliders */}
+        {/* ------------------------------------------------------------------
+            SECTION 2: DOMINANT PROJECTED WEALTH FEATURE CARD
+            ------------------------------------------------------------------ */}
+        <section className="wm-dash-feature-card">
+          <div className="wm-dash-feature-header">
             <div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '13px', marginBottom: '6px' }}>
-                <span style={{ color: '#475569' }}>Current Age / Retirement Age</span>
-                <span style={{ fontWeight: '600', color: '#4f46e5' }}>{currentAge} / {retireAge} Yrs</span>
+              <span className="wm-eyebrow" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <ShieldCheck size={14} color="#8B00FF" /> Projected Retirement Wealth (Age {retireAge})
+              </span>
+              <div className="wm-dash-networth-val" style={{ display: 'flex', alignItems: 'baseline', gap: '16px', flexWrap: 'wrap' }}>
+                <span>₹ {((summaryMetrics.netWorthRetire || 0) / 10000000).toFixed(2)} Crore</span>
+                <span className="wm-badge-positive" style={{ fontSize: '12px', padding: '6px 12px' }}>
+                  <TrendingUp size={14} /> {(scenario).toUpperCase()} MODEL
+                </span>
               </div>
-              <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
-                <input 
-                  type="range" 
-                  min="18" 
-                  max="70" 
-                  value={currentAge}
-                  onChange={(e) => setCurrentAge(parseInt(e.target.value))}
-                  style={{ flex: 1, accentColor: '#4f46e5' }} 
-                />
-                <input 
-                  type="range" 
-                  min="45" 
-                  max="90" 
-                  value={retireAge}
-                  onChange={(e) => setRetireAge(parseInt(e.target.value))}
-                  style={{ flex: 1, accentColor: '#3b82f6' }} 
-                />
+              <p className="wm-caption" style={{ margin: '8px 0 0 0' }}>
+                Real Purchasing Power (Inflation-Adjusted): <strong style={{ color: '#111111' }}>₹ {(((summaryMetrics.netWorthRetire || 0) / Math.pow(1 + inflation/100, Math.max(1, retireAge - currentAge))) / 10000000).toFixed(2)} Crore</strong> at {inflation}% annual inflation.
+              </p>
+            </div>
+
+            <div style={{ display: 'flex', gap: '20px', flexWrap: 'wrap' }}>
+              <div style={{ textAlign: 'left', minWidth: '140px' }}>
+                <span className="wm-eyebrow">Doubling Horizon</span>
+                <div style={{ fontSize: '22px', fontWeight: '800', color: '#8B00FF', marginTop: '4px' }}>
+                  {summaryMetrics.doubleYear} Years
+                </div>
+                <span style={{ fontSize: '11px', color: '#6B7280' }}>To surpass ₹7.52 Crore</span>
+              </div>
+              <div style={{ textAlign: 'left', minWidth: '140px' }}>
+                <span className="wm-eyebrow">Monthly Capital Add</span>
+                <div style={{ fontSize: '22px', fontWeight: '800', color: '#111111', marginTop: '4px' }}>
+                  ₹ {monthlySavings.toLocaleString()}
+                </div>
+                <span style={{ fontSize: '11px', color: '#059669', fontWeight: '600' }}>Indexed at {salaryGrowth}% growth</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* ------------------------------------------------------------------
+            SECTION 3: TWO-COLUMN MODELING CONSOLE (SLIDERS + CHART)
+            ------------------------------------------------------------------ */}
+        <div style={{ display: 'grid', gridTemplateColumns: 'minmax(320px, 1fr) 2fr', gap: '32px', marginBottom: '48px' }}>
+          
+          {/* Sliders and Controls Console */}
+          <div className="wm-card" style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+            <div>
+              <span className="wm-eyebrow">Actuarial Parameters</span>
+              <h3 className="wm-card-heading" style={{ margin: '4px 0 0 0' }}>Simulation Inputs</h3>
+            </div>
+            
+            {/* Age Range Sliders */}
+            <div>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+                <label style={{ fontSize: '12px', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.06em', color: '#374151' }}>
+                  Current Age / Target Retirement
+                </label>
+                <span style={{ fontWeight: '800', color: '#8B00FF', fontSize: '13px' }}>
+                  {currentAge} yrs / {retireAge} yrs
+                </span>
+              </div>
+              <div style={{ display: 'flex', gap: '14px', alignItems: 'center' }}>
+                <div style={{ flex: 1 }}>
+                  <input 
+                    type="range" 
+                    min="18" 
+                    max="65" 
+                    value={currentAge}
+                    onChange={(e) => setCurrentAge(parseInt(e.target.value))}
+                    className="wm-slider"
+                    aria-label="Current age slider"
+                  />
+                  <span style={{ fontSize: '10px', color: '#6B7280', display: 'block', marginTop: '2px' }}>Current: {currentAge}</span>
+                </div>
+                <div style={{ flex: 1 }}>
+                  <input 
+                    type="range" 
+                    min="40" 
+                    max="85" 
+                    value={retireAge}
+                    onChange={(e) => setRetireAge(parseInt(e.target.value))}
+                    className="wm-slider"
+                    aria-label="Target retirement age slider"
+                  />
+                  <span style={{ fontSize: '10px', color: '#6B7280', display: 'block', marginTop: '2px' }}>Retire: {retireAge}</span>
+                </div>
               </div>
             </div>
 
-            {/* Current Net Worth */}
+            {/* Current Net Worth Input */}
             <div>
-              <label style={{ fontSize: '13px', color: '#475569', display: 'block', marginBottom: '6px' }}>Current Net Worth (₹)</label>
+              <label style={{ fontSize: '12px', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.06em', color: '#374151', display: 'block', marginBottom: '6px' }}>
+                Current Starting Net Worth (₹)
+              </label>
               <input 
                 type="number" 
-                className="glass-input" 
-                style={{ width: '100%' }} 
+                className="wm-input" 
                 value={currentNetWorth}
                 onChange={(e) => setCurrentNetWorth(parseFloat(e.target.value) || 0)}
+                aria-label="Starting net worth"
               />
             </div>
 
-            {/* Monthly Savings */}
+            {/* Monthly Savings Target */}
             <div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '13px', marginBottom: '6px' }}>
-                <span style={{ color: '#475569' }}>Monthly Savings Target</span>
-                <span style={{ fontWeight: '600', color: '#4f46e5' }}>₹{monthlySavings.toLocaleString()}</span>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
+                <label style={{ fontSize: '12px', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.06em', color: '#374151' }}>
+                  Monthly Savings Target
+                </label>
+                <span style={{ fontWeight: '800', color: '#8B00FF', fontSize: '13px' }}>
+                  ₹ {monthlySavings.toLocaleString()}
+                </span>
               </div>
               <input 
                 type="range" 
@@ -237,15 +297,20 @@ function WealthForecast() {
                 step="5000"
                 value={monthlySavings}
                 onChange={(e) => setMonthlySavings(parseInt(e.target.value))}
-                style={{ width: '100%', accentColor: '#4f46e5' }} 
+                className="wm-slider"
+                aria-label="Monthly savings slider"
               />
             </div>
 
             {/* Expected Annual Returns */}
             <div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '13px', marginBottom: '6px' }}>
-                <span style={{ color: '#475569' }}>Expected Equities Return (%)</span>
-                <span style={{ fontWeight: '600', color: '#4f46e5' }}>{expectedReturn}%</span>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
+                <label style={{ fontSize: '12px', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.06em', color: '#374151' }}>
+                  Expected Equities Return (%)
+                </label>
+                <span style={{ fontWeight: '800', color: '#059669', fontSize: '13px' }}>
+                  {expectedReturn}%
+                </span>
               </div>
               <input 
                 type="range" 
@@ -254,15 +319,20 @@ function WealthForecast() {
                 step="0.5"
                 value={expectedReturn}
                 onChange={(e) => setExpectedReturn(parseFloat(e.target.value))}
-                style={{ width: '100%', accentColor: '#4f46e5' }} 
+                className="wm-slider"
+                aria-label="Expected return slider"
               />
             </div>
 
             {/* Property appreciation */}
             <div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '13px', marginBottom: '6px' }}>
-                <span style={{ color: '#475569' }}>Property Appreciation (%)</span>
-                <span style={{ fontWeight: '600', color: '#3b82f6' }}>{propertyAppreciation}%</span>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
+                <label style={{ fontSize: '12px', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.06em', color: '#374151' }}>
+                  Property Appreciation (%)
+                </label>
+                <span style={{ fontWeight: '800', color: '#8B00FF', fontSize: '13px' }}>
+                  {propertyAppreciation}%
+                </span>
               </div>
               <input 
                 type="range" 
@@ -271,30 +341,35 @@ function WealthForecast() {
                 step="0.5"
                 value={propertyAppreciation}
                 onChange={(e) => setPropertyAppreciation(parseFloat(e.target.value))}
-                style={{ width: '100%', accentColor: '#3b82f6' }} 
+                className="wm-slider"
+                aria-label="Property appreciation slider"
               />
             </div>
 
             {/* Inflation & Salary sliders */}
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
               <div>
-                <label style={{ fontSize: '12px', color: '#475569', display: 'block', marginBottom: '4px' }}>Inflation (%)</label>
+                <label style={{ fontSize: '11px', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.06em', color: '#374151', display: 'block', marginBottom: '4px' }}>
+                  Inflation (%)
+                </label>
                 <input 
                   type="number" 
-                  className="glass-input" 
-                  style={{ width: '100%' }}
+                  className="wm-input" 
                   value={inflation}
                   onChange={(e) => setInflation(parseFloat(e.target.value) || 0)}
+                  aria-label="Inflation percentage"
                 />
               </div>
               <div>
-                <label style={{ fontSize: '12px', color: '#475569', display: 'block', marginBottom: '4px' }}>Salary Growth (%)</label>
+                <label style={{ fontSize: '11px', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.06em', color: '#374151', display: 'block', marginBottom: '4px' }}>
+                  Salary Growth (%)
+                </label>
                 <input 
                   type="number" 
-                  className="glass-input" 
-                  style={{ width: '100%' }}
+                  className="wm-input" 
                   value={salaryGrowth}
                   onChange={(e) => setSalaryGrowth(parseFloat(e.target.value) || 0)}
+                  aria-label="Salary growth percentage"
                 />
               </div>
             </div>
@@ -302,69 +377,114 @@ function WealthForecast() {
           </div>
 
           {/* Interactive Chart */}
-          <div className="glass-card" style={{ padding: '24px', display: 'flex', flexDirection: 'column' }}>
-            <h3 style={{ fontSize: '16px', fontWeight: '600', marginBottom: '16px', color: '#0f172a' }}>Cumulative Assets Valuation Projections</h3>
-            <div style={{ flex: 1, width: '100%', minHeight: '320px' }}>
+          <div className="wm-card" style={{ display: 'flex', flexDirection: 'column' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '20px' }}>
+              <div>
+                <span className="wm-eyebrow">Multi-Asset Trajectory</span>
+                <h3 className="wm-card-heading" style={{ margin: '4px 0 0 0' }}>
+                  Cumulative Assets Valuation Projections
+                </h3>
+              </div>
+              <span className="wm-tag">
+                {retireAge - currentAge} Years Horizon
+              </span>
+            </div>
+
+            <div style={{ flex: 1, width: '100%', minHeight: '340px' }}>
               <ResponsiveContainer width="100%" height="100%">
                 <RechartsLineChart data={forecastData}>
-                  <XAxis dataKey="age" stroke="#475569" tickFormatter={(v) => `Age ${v}`} />
-                  <YAxis stroke="#475569" tickFormatter={(v) => `₹${v/10000000}Cr`} />
-                  <Tooltip formatter={(value) => [`₹${value.toLocaleString()}`, '']} contentStyle={{ background: '#ffffff', borderColor: '#e2e8f0', borderRadius: '10px' }} />
+                  <XAxis dataKey="age" stroke="#9CA3AF" tick={{ fill: '#374151', fontSize: 11, fontWeight: 600 }} tickFormatter={(v) => `Age ${v}`} />
+                  <YAxis stroke="#9CA3AF" tick={{ fill: '#374151', fontSize: 11, fontWeight: 600 }} tickFormatter={(v) => `₹${v/10000000}Cr`} />
+                  <Tooltip 
+                    formatter={(value) => [`₹${value.toLocaleString()}`, '']} 
+                    contentStyle={{ 
+                      background: '#FFFFFF', 
+                      borderColor: '#E5E7EB', 
+                      borderRadius: '4px',
+                      boxShadow: '0 4px 14px rgba(0,0,0,0.08)',
+                      fontFamily: 'Inter, sans-serif'
+                    }} 
+                  />
                   <Legend />
-                  <Line type="monotone" dataKey="Total Net Worth" stroke="#4f46e5" strokeWidth={3} dot={false} activeDot={{ r: 6 }} />
-                  <Line type="monotone" dataKey="Inflation Adjusted" stroke="#f59e0b" strokeWidth={2.5} strokeDasharray="5 5" dot={false} />
-                  <Line type="monotone" dataKey="Real Estate" stroke="#3b82f6" strokeWidth={1.5} dot={false} />
-                  <Line type="monotone" dataKey="Liquid Assets" stroke="#8b5cf6" strokeWidth={1.5} dot={false} />
+                  <Line type="monotone" dataKey="Total Net Worth" name="Nominal Net Worth" stroke="#8B00FF" strokeWidth={3} dot={false} activeDot={{ r: 6 }} />
+                  <Line type="monotone" dataKey="Inflation Adjusted" name="Real Purchasing Power" stroke="#F59E0B" strokeWidth={2.2} strokeDasharray="5 5" dot={false} />
+                  <Line type="monotone" dataKey="Real Estate" name="Real Estate Equity" stroke="#3B82F6" strokeWidth={1.5} dot={false} />
+                  <Line type="monotone" dataKey="Liquid Assets" name="Liquid Securities" stroke="#06B6D4" strokeWidth={1.5} dot={false} />
                 </RechartsLineChart>
               </ResponsiveContainer>
             </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', background: 'rgba(79, 70, 229, 0.05)', color: '#4f46e5', padding: '10px 14px', borderRadius: '8px', fontSize: '12px', marginTop: '16px', border: '1px solid rgba(79, 70, 229, 0.15)' }}>
-              <Sparkles size={16} />
-              <span>Due to property appreciation + consistent ₹1.25 L savings, nominal net worth reaches ₹{(summaryMetrics.netWorthRetire/10000000).toFixed(2)} Cr by age {retireAge}.</span>
+
+            {/* Simulation Insight Callout */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', background: 'var(--wm-bg-lavender)', color: '#8B00FF', padding: '14px 18px', borderRadius: '4px', fontSize: '13px', marginTop: '20px', border: '1px solid #E9D5FF' }}>
+              <Sparkles size={18} style={{ flexShrink: 0 }} />
+              <span style={{ color: '#111111', fontWeight: '500' }}>
+                With property compounding at {propertyAppreciation}% plus recurring monthly investments of ₹{monthlySavings.toLocaleString()}, nominal net worth scales to <strong style={{ color: '#8B00FF' }}>₹{((summaryMetrics.netWorthRetire || 0)/10000000).toFixed(2)} Cr</strong> by age {retireAge}.
+              </span>
             </div>
           </div>
 
         </div>
 
-        {/* Milestone Cards & Future Asset Allocation */}
-        <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '24px' }}>
+        {/* ------------------------------------------------------------------
+            SECTION 4: MILESTONES & RETIREMENT ALLOCATION
+            ------------------------------------------------------------------ */}
+        <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '32px', marginBottom: '40px' }}>
           
           {/* Milestone timeline cards */}
-          <div className="glass-card" style={{ padding: '24px' }}>
-            <h3 style={{ fontSize: '16px', fontWeight: '600', marginBottom: '20px', color: '#0f172a' }}>Future Net Worth Milestones</h3>
+          <div className="wm-card">
+            <span className="wm-eyebrow">Chronological Capital Thresholds</span>
+            <h3 className="wm-card-heading" style={{ margin: '4px 0 20px 0' }}>
+              Future Net Worth Milestones
+            </h3>
             
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '16px' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '16px' }}>
               
-              <div className="glass-card" style={{ padding: '20px', background: 'rgba(15, 23, 42, 0.015)' }}>
-                <span style={{ fontSize: '11px', color: '#475569', textTransform: 'uppercase', fontWeight: '600' }}>After 5 Years</span>
-                <h4 style={{ fontSize: '20px', fontWeight: '700', marginTop: '8px', color: '#0f172a' }}>₹{(summaryMetrics.netWorth5Yr/10000000).toFixed(2)} Cr</h4>
-                <div style={{ fontSize: '11px', color: '#059669', marginTop: '6px' }}>Nominal valuation</div>
+              <div style={{ padding: '20px', background: 'var(--wm-bg-secondary)', border: '1px solid var(--wm-border)', borderRadius: '4px' }}>
+                <span className="wm-eyebrow" style={{ color: '#6B7280' }}>After 5 Years</span>
+                <div style={{ fontSize: '22px', fontWeight: '800', marginTop: '6px', color: '#111111' }}>
+                  ₹{((summaryMetrics.netWorth5Yr || 0)/10000000).toFixed(2)} Cr
+                </div>
+                <div style={{ fontSize: '11px', color: '#059669', marginTop: '4px', fontWeight: '600' }}>Age {currentAge + 5} Projection</div>
               </div>
 
-              <div className="glass-card" style={{ padding: '20px', background: 'rgba(15, 23, 42, 0.015)' }}>
-                <span style={{ fontSize: '11px', color: '#475569', textTransform: 'uppercase', fontWeight: '600' }}>After 10 Years</span>
-                <h4 style={{ fontSize: '20px', fontWeight: '700', marginTop: '8px', color: '#0f172a' }}>₹{(summaryMetrics.netWorth10Yr/10000000).toFixed(2)} Cr</h4>
-                <div style={{ fontSize: '11px', color: '#059669', marginTop: '6px' }}>Nominal valuation</div>
+              <div style={{ padding: '20px', background: 'var(--wm-bg-secondary)', border: '1px solid var(--wm-border)', borderRadius: '4px' }}>
+                <span className="wm-eyebrow" style={{ color: '#6B7280' }}>After 10 Years</span>
+                <div style={{ fontSize: '22px', fontWeight: '800', marginTop: '6px', color: '#111111' }}>
+                  ₹{((summaryMetrics.netWorth10Yr || 0)/10000000).toFixed(2)} Cr
+                </div>
+                <div style={{ fontSize: '11px', color: '#059669', marginTop: '4px', fontWeight: '600' }}>Age {currentAge + 10} Projection</div>
               </div>
 
-              <div className="glass-card" style={{ padding: '20px', background: 'rgba(15, 23, 42, 0.015)' }}>
-                <span style={{ fontSize: '11px', color: '#475569', textTransform: 'uppercase', fontWeight: '600' }}>At Retirement ({retireAge})</span>
-                <h4 style={{ fontSize: '20px', fontWeight: '700', marginTop: '8px', color: '#059669' }}>₹{(summaryMetrics.netWorthRetire/10000000).toFixed(2)} Cr</h4>
-                <div style={{ fontSize: '11px', color: '#475569', marginTop: '6px' }}>Inflation Adjusted: ₹{((summaryMetrics.netWorthRetire / Math.pow(1 + inflation/100, retireAge - currentAge))/10000000).toFixed(2)} Cr</div>
+              <div style={{ padding: '20px', background: 'var(--wm-bg-secondary)', border: '1px solid var(--wm-border)', borderRadius: '4px' }}>
+                <span className="wm-eyebrow" style={{ color: '#6B7280' }}>At Retirement ({retireAge})</span>
+                <div style={{ fontSize: '22px', fontWeight: '800', marginTop: '6px', color: '#059669' }}>
+                  ₹{((summaryMetrics.netWorthRetire || 0)/10000000).toFixed(2)} Cr
+                </div>
+                <div style={{ fontSize: '11px', color: '#6B7280', marginTop: '4px' }}>
+                  Inflation-Adj: ₹{(((summaryMetrics.netWorthRetire || 0) / Math.pow(1 + inflation/100, Math.max(1, retireAge - currentAge)))/10000000).toFixed(2)} Cr
+                </div>
               </div>
 
-              <div className="glass-card" style={{ padding: '20px', background: 'linear-gradient(135deg, rgba(79, 70, 229, 0.06) 0%, rgba(109, 40, 217, 0.04) 100%)', border: '1px solid rgba(79, 70, 229, 0.25)' }}>
-                <span style={{ fontSize: '11px', color: '#475569', textTransform: 'uppercase', fontWeight: '600' }}>Double Your Wealth</span>
-                <h4 style={{ fontSize: '20px', fontWeight: '700', marginTop: '8px', color: '#4f46e5' }}>{summaryMetrics.doubleYear} Years</h4>
-                <div style={{ fontSize: '11px', color: '#4f46e5', marginTop: '6px' }}>To reach ₹7.52 Crore</div>
+              <div style={{ padding: '20px', background: 'var(--wm-bg-lavender)', border: '1px solid #E9D5FF', borderRadius: '4px' }}>
+                <span className="wm-eyebrow" style={{ color: '#8B00FF' }}>Wealth Doubling</span>
+                <div style={{ fontSize: '22px', fontWeight: '800', marginTop: '6px', color: '#8B00FF' }}>
+                  {summaryMetrics.doubleYear} Years
+                </div>
+                <div style={{ fontSize: '11px', color: '#8B00FF', marginTop: '4px', fontWeight: '600' }}>
+                  To reach ₹7.52 Crore
+                </div>
               </div>
 
             </div>
           </div>
 
           {/* Allocation Pie Chart */}
-          <div className="glass-card" style={{ padding: '24px', display: 'flex', flexDirection: 'column' }}>
-            <h3 style={{ fontSize: '16px', fontWeight: '600', marginBottom: '12px', color: '#0f172a' }}>Retirement Allocation ({retireAge})</h3>
+          <div className="wm-card" style={{ display: 'flex', flexDirection: 'column' }}>
+            <span className="wm-eyebrow">Asset Composition</span>
+            <h3 className="wm-card-heading" style={{ margin: '4px 0 12px 0' }}>
+              Retirement Allocation ({retireAge})
+            </h3>
+            
             <div style={{ flex: 1, width: '100%', height: '180px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
               <ResponsiveContainer width="100%" height="100%">
                 <RechartsPieChart>
@@ -378,7 +498,7 @@ function WealthForecast() {
                     dataKey="value"
                   >
                     {summaryMetrics.futureAllocation?.map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                      <Cell key={`cell-${index}`} fill={PIE_COLORS[index % PIE_COLORS.length]} />
                     ))}
                   </Pie>
                   <Tooltip formatter={(v) => `₹${(v/10000000).toFixed(2)} Cr`} />
@@ -386,18 +506,35 @@ function WealthForecast() {
               </ResponsiveContainer>
             </div>
             
-            <div style={{ display: 'flex', justifyContent: 'center', gap: '16px', fontSize: '12px', color: '#475569', marginTop: '12px' }}>
+            <div style={{ display: 'flex', justifyContent: 'center', gap: '20px', fontSize: '12px', marginTop: '12px' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                <div style={{ width: '10px', height: '10px', backgroundColor: '#3b82f6', borderRadius: '2px' }}></div>
-                <span>Real Estate</span>
+                <div style={{ width: '10px', height: '10px', backgroundColor: '#8B00FF', borderRadius: '2px' }}></div>
+                <span style={{ fontWeight: '600', color: '#111111' }}>Real Estate</span>
               </div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                <div style={{ width: '10px', height: '10px', backgroundColor: '#4f46e5', borderRadius: '2px' }}></div>
-                <span>Liquid Portfolio</span>
+                <div style={{ width: '10px', height: '10px', backgroundColor: '#06B6D4', borderRadius: '2px' }}></div>
+                <span style={{ fontWeight: '600', color: '#111111' }}>Liquid Portfolio</span>
               </div>
             </div>
           </div>
 
+        </div>
+
+        {/* Bottom CTA to Calendar / Planning */}
+        <div style={{ marginTop: '20px', padding: '24px 32px', background: '#FAF5FF', border: '1px solid #E9D5FF', borderRadius: '4px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px' }}>
+          <div>
+            <span className="wm-eyebrow" style={{ color: '#8B00FF' }}>Next Step: Reconcile Upcoming Cash Inflows</span>
+            <div style={{ fontSize: '16px', fontWeight: '700', color: '#111111', marginTop: '2px' }}>
+              Schedule dividend distributions, SIP deductions, and rental receipts on the Wealth Calendar.
+            </div>
+          </div>
+          <button 
+            onClick={() => navigate('/calendar')}
+            className="wm-btn wm-btn-primary"
+            aria-label="Open Wealth Calendar"
+          >
+            Open Wealth Calendar <ArrowRight size={16} />
+          </button>
         </div>
 
       </main>
